@@ -1,0 +1,12 @@
+{
+  "name": "team-maria-onboarding",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Clickable prototype of the Team Maria distributor onboarding app",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
