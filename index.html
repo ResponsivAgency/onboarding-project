@@ -639,8 +639,8 @@
   .roster { display: flex; flex-direction: column; }
   .r-head, .r-row {
     display: grid;
-    grid-template-columns: minmax(180px, 1.5fr) 110px minmax(150px, 1.3fr) minmax(140px, 1.2fr) 112px 140px;
-    gap: 16px;
+    grid-template-columns: minmax(170px, 1.5fr) 88px 128px minmax(130px, 1.2fr) minmax(130px, 1.2fr) 92px 128px;
+    gap: 14px;
     align-items: center;
     padding: 14px 6px;
   }
@@ -718,6 +718,133 @@
     .finish .btn { width: 100%; padding-inline: 18px; }
     .wstep { padding: 12px; }
   }
+
+  /* ---------- Tiers, next steps, mindset, advanced ---------- */
+  .stack { display: flex; flex-direction: column; gap: 28px; }
+  .stack-14 { display: flex; flex-direction: column; gap: 14px; }
+
+  .dnav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .dnav a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600;
+    padding: 7px 14px; border-radius: 99px;
+    border: 1px solid var(--silver-3); background: #fff; color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .dnav a:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .dnav a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .dnav a:focus-visible { outline: 3px solid rgba(210,60,140,.45); outline-offset: 2px; }
+  .dnav-tier { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--plum); }
+
+  .tier-pill {
+    justify-self: start;
+    font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 99px; white-space: nowrap;
+  }
+  .tier-pill.standard { background: #fff; border: 1px solid var(--silver-3); color: var(--ink-soft); }
+  .tier-pill.premium { background: var(--grad); color: #fff; }
+  .r-tier { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .r-tier .link-btn { font-size: 12px; text-align: left; }
+  .r-progress .adv-line { color: var(--plum); }
+
+  .tier-pick { grid-column: 1 / -1; border: 0; margin: 0; padding: 0; min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tier-pick legend { font-size: 12px; font-weight: 700; letter-spacing: .06em; padding: 0; margin-bottom: 6px; }
+  .tier-opt {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px; border-radius: 14px;
+    background: #fff; border: 1px solid var(--silver-3);
+    cursor: pointer;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .tier-opt input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--rose); flex: none; cursor: pointer; }
+  .tier-opt b { display: block; font-size: 15px; }
+  .tier-opt small { display: block; font-size: 13px; color: var(--ink-soft); }
+  .tier-opt:has(input:checked) { border-color: var(--rose); box-shadow: 0 0 0 4px rgba(210,60,140,.12); }
+  .tier-opt:has(input:focus-visible) { outline: 3px solid rgba(210,60,140,.45); outline-offset: 2px; }
+  .tier-pick[aria-invalid="true"] .tier-opt { border-color: #c2334d; }
+
+  .next-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; text-align: left; }
+  .next-opts.is-single { grid-template-columns: 1fr; }
+  .next-opt {
+    display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+    padding: 18px; border-radius: 16px;
+    background: #fff; border: 1px solid var(--silver-2);
+  }
+  .next-opt.is-feature { border: 1.5px solid transparent; background: linear-gradient(#fff, #fff) padding-box, var(--grad) border-box; }
+  .next-opt b { font-family: var(--display); font-size: 23px; font-weight: 600; line-height: 1.15; }
+  .next-opt p { margin: 0 0 8px; max-width: none; font-size: 14px; color: var(--ink-soft); flex: 1; }
+  .next-opt .btn { margin-top: auto; padding: 12px 22px; font-size: 14px; }
+  .ns-intro { margin: 0; color: var(--ink-soft); max-width: 60ch; }
+  .celebrate .next-opts { margin-top: 12px; }
+
+  .locked {
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
+    padding: 44px 24px; border-radius: 24px;
+    background: var(--chrome); border: 1px solid #fff;
+    box-shadow: 0 1px 0 #fff inset, 0 20px 50px -24px rgba(90,50,130,.28);
+  }
+  .lock-ic {
+    width: 54px; height: 54px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--silver-1); border: 1px solid var(--silver-3); color: var(--ink-soft);
+  }
+  .lock-ic svg { width: 22px; height: 22px; }
+  .locked h2 { margin: 0; font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1.1; text-wrap: balance; }
+  .locked p { margin: 0 0 8px; color: var(--ink-soft); max-width: 46ch; }
+
+  .mgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 14px; }
+  .mtile {
+    width: 100%; height: 100%; font: inherit; color: inherit; text-align: left;
+    border: 1px solid var(--silver-2); border-radius: 18px; padding: 0; overflow: hidden;
+    background: #fff; cursor: pointer;
+    display: flex; flex-direction: column;
+    box-shadow: 0 4px 14px -8px rgba(80,40,120,.22);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .mtile:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(80,40,120,.3); }
+  .mtile:focus-visible { outline: 3px solid rgba(210,60,140,.45); outline-offset: 3px; }
+  .mthumb {
+    position: relative; aspect-ratio: 4 / 5;
+    display: grid; place-items: center; color: #fff;
+    background:
+      radial-gradient(circle at 25% 20%, rgba(255,255,255,.28), transparent 45%),
+      linear-gradient(150deg, var(--a), var(--b));
+  }
+  .playdot {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(255,255,255,.92); color: var(--plum);
+    display: grid; place-items: center;
+    box-shadow: 0 8px 22px rgba(40,10,60,.35);
+  }
+  .mplat {
+    position: absolute; left: 10px; top: 10px;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 9px; border-radius: 99px;
+    background: rgba(42,29,54,.45); backdrop-filter: blur(4px);
+  }
+  .mlen { position: absolute; right: 12px; bottom: 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mbody { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 2px; }
+  .mbody b { font-size: 14px; line-height: 1.3; }
+  .mbody span { font-size: 12px; color: var(--ink-soft); }
+
+  .proto-tier { display: flex; align-items: center; gap: 4px; padding-left: 10px; border-left: 1px solid rgba(255,255,255,.18); }
+  .proto-tier > span { opacity: .75; margin-right: 4px; }
+  .proto-tier button {
+    font: inherit; font-size: 12px; font-weight: 600; color: inherit;
+    background: none; border: 1px solid rgba(255,255,255,.25); border-radius: 99px;
+    padding: 5px 11px; cursor: pointer;
+  }
+  .proto-tier button[aria-pressed="true"] { background: #fff; color: var(--ink); border-color: #fff; }
+  .proto-tier button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  @media (max-width: 520px) {
+    .tier-pick { grid-template-columns: 1fr; }
+    .next-opts { grid-template-columns: 1fr; }
+    .next-opt .btn { width: 100%; }
+    .dnav-tier { margin-left: 0; width: 100%; }
+    .mgrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .proto-tier { border-left: 0; padding-left: 0; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -727,8 +854,15 @@
   <span>Prototype</span>
   <div class="proto-tabs">
     <a href="#login" data-view="login">1 · Login</a>
-    <a href="#onboarding" data-view="onboarding">2 · Susan’s onboarding</a>
-    <a href="#admin" data-view="admin">3 · Maria’s admin</a>
+    <a href="#onboarding" data-view="onboarding">2 · Onboarding</a>
+    <a href="#mindset" data-view="mindset">3 · Mindset</a>
+    <a href="#advanced" data-view="advanced">4 · Advanced</a>
+    <a href="#admin" data-view="admin">5 · Maria’s admin</a>
+  </div>
+  <div class="proto-tier" role="group" aria-label="Susan’s plan in this demo">
+    <span>Susan is on</span>
+    <button type="button" data-demo-tier="standard" aria-pressed="false">Standard</button>
+    <button type="button" data-demo-tier="premium" aria-pressed="false">Premium</button>
   </div>
 </nav>
 
@@ -756,7 +890,7 @@
       <button class="btn btn-primary" type="submit">Sign in</button>
     </form>
     <p class="login-foot">Forgot your password? Text Maria and she’ll reset it for you.</p>
-    <div class="demo-note">Demo: Susan’s login is filled in. Press Sign in.</div>
+    <div class="demo-note">Demo: Susan’s login is filled in. Press Sign in. Use the switch in the top bar to see her as a Standard or Premium member.</div>
   </div>
 </section>
 
@@ -837,6 +971,11 @@
         <label for="newSponsorPhone">Sponsor phone (optional)</label>
         <input id="newSponsorPhone" type="tel" autocomplete="off" placeholder="(555) 390-2214">
       </div>
+      <fieldset class="tier-pick" id="newTier">
+        <legend>Onboarding plan</legend>
+        <label class="tier-opt"><input type="radio" name="tier" value="standard"><span><b>Standard</b><small>Onboarding, then mindset videos</small></span></label>
+        <label class="tier-opt"><input type="radio" name="tier" value="premium"><span><b>Premium</b><small>Onboarding, then mindset videos and advanced training</small></span></label>
+      </fieldset>
       <button class="btn btn-primary" type="submit">Create login</button>
     </form>
     <p class="form-error" id="addError" hidden></p>
@@ -847,6 +986,7 @@
           <dt>Login page</dt><dd>teammaria.app/login</dd>
           <dt>Email</dt><dd id="credsEmail"></dd>
           <dt>Password</dt><dd><code id="credsPass"></code></dd>
+          <dt>Plan</dt><dd id="credsTier"></dd>
         </dl>
       </div>
       <button class="btn btn-primary btn-sm" id="copyCreds" type="button">Copy message to send</button>
@@ -865,7 +1005,7 @@
     </div>
     <div class="roster">
       <div class="r-head">
-        <span>Team member</span><span>Team leader</span><span>Progress</span><span>Currently on</span><span>Last active</span><span>Status</span>
+        <span>Team member</span><span>Team leader</span><span>Plan</span><span>Progress</span><span>Currently on</span><span>Last active</span><span>Status</span>
       </div>
       <div id="roster"></div>
     </div>
@@ -882,6 +1022,7 @@
     <div class="brand"><span class="brand-mark">M</span> Team Maria · New Distributor Onboarding</div>
     <button class="link-btn" type="button" data-go="login">Sign out</button>
   </div>
+  <nav class="dnav" aria-label="Your training"></nav>
 
   <header class="hero">
     <h1>Hi Susan, welcome to your onboarding for <em>Team Maria.</em></h1>
@@ -895,10 +1036,11 @@
 
   <div class="celebrate" id="celebrate" hidden>
     <h2>You did it, Susan!</h2>
-    <p>You’ve finished all 7 onboarding videos. Maria will reach out to schedule your launch call. Welcome to the team.</p>
+    <p id="celebrateText"></p>
+    <div id="celebrateOpts" style="width:100%"></div>
   </div>
 
-  <section style="display:flex;flex-direction:column;gap:14px;">
+  <section class="stack-14">
     <div class="section-head">
       <h2>Your training path</h2>
       <span>7 videos · about 66 minutes</span>
@@ -908,7 +1050,74 @@
 
   <div class="footer-row">
     <button class="btn btn-ghost" id="reset" type="button">Reset demo progress</button>
+    <button class="btn btn-ghost" id="skipToEnd" type="button">Demo: skip to the end of onboarding</button>
     <button class="btn btn-ghost" id="phoneToggle" type="button">Demo: remove sponsor’s phone number</button>
+  </div>
+</div>
+
+<!-- MINDSET -->
+<div class="wrap" id="view-mindset" hidden>
+  <div class="topline">
+    <div class="brand"><span class="brand-mark">M</span> Team Maria · Mindset Training</div>
+    <button class="link-btn" type="button" data-go="login">Sign out</button>
+  </div>
+  <nav class="dnav" aria-label="Your training"></nav>
+
+  <div class="locked" id="mindsetLocked" hidden></div>
+
+  <div class="stack" id="mindsetContent">
+    <header class="hero">
+      <h1>Mindset <em>training</em></h1>
+      <p>Short videos from Maria and the team for the days when your head gets in the way. Watch them in any order, and come back whenever you need a reset.</p>
+    </header>
+    <section class="stack-14">
+      <div class="section-head">
+        <h2>Mindset videos</h2>
+        <span id="mindsetCount"></span>
+      </div>
+      <ul class="mgrid" id="mGrid"></ul>
+      <div class="demo-note">Placeholder videos. Swap in Maria’s Instagram and Facebook links when she sends them.</div>
+    </section>
+  </div>
+</div>
+
+<!-- ADVANCED TRAINING -->
+<div class="wrap" id="view-advanced" hidden>
+  <div class="topline">
+    <div class="brand"><span class="brand-mark">M</span> Team Maria · Advanced Training</div>
+    <button class="link-btn" type="button" data-go="login">Sign out</button>
+  </div>
+  <nav class="dnav" aria-label="Your training"></nav>
+
+  <div class="locked" id="advLocked" hidden></div>
+
+  <div class="stack" id="advContent">
+    <header class="hero">
+      <h1>Advanced training for <em>Premium members.</em></h1>
+      <p>You’ve got the basics down. These lessons are about growing past your first month: leading people, hosting events, and building toward your next rank. Same as onboarding, watch them <strong>in order</strong> and each one unlocks the next.</p>
+      <div class="progress">
+        <div class="bar" role="progressbar" aria-label="Advanced training progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="advBar"><div class="bar-fill" id="advBarFill"></div></div>
+        <div class="progress-label" id="advProgressLabel">0 of 6 lessons complete</div>
+      </div>
+    </header>
+
+    <div class="celebrate" id="advCelebrate" hidden>
+      <h2>Advanced training complete!</h2>
+      <p>You’ve finished every advanced lesson. Maria will reach out to map out your leadership plan with you.</p>
+    </div>
+
+    <section class="stack-14">
+      <div class="section-head">
+        <h2>Your advanced path</h2>
+        <span id="advMeta"></span>
+      </div>
+      <ol class="list" id="advList"></ol>
+      <div class="demo-note">Placeholder lessons for Maria to review. Final titles, videos, and write-ups are still to come.</div>
+    </section>
+
+    <div class="footer-row">
+      <button class="btn btn-ghost" id="advReset" type="button">Reset advanced progress</button>
+    </div>
   </div>
 </div>
 
@@ -939,6 +1148,22 @@
     <div class="writeup" id="mWriteup"></div>
 
     <div class="finish" id="mEnd"></div>
+  </div>
+</dialog>
+
+<dialog id="nextSteps" aria-labelledby="nsTitle">
+  <div class="modal-inner">
+    <div class="modal-top">
+      <div>
+        <div class="eyebrow">Onboarding complete</div>
+        <h3 id="nsTitle">Congrats on completing your onboarding, Susan!</h3>
+      </div>
+      <button class="close" id="nsClose" type="button" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+    <p class="ns-intro" id="nsIntro"></p>
+    <div id="nsOpts"></div>
   </div>
 </dialog>
 
@@ -1012,50 +1237,130 @@
       action: "Book your launch call with Maria and put the weekly team call on your calendar."
     }
   ];
-  const TOTAL = VIDEOS.length;
-  const KEY = "team-maria-onboarding-done";
+  // Placeholder lessons for the Premium advanced training. Swap in real content when Maria has it.
+  const ADVANCED = [
+    {
+      title: "Leading Your First Team Member",
+      mins: 10,
+      summary: "When someone joins under you, the first two weeks set the tone. Here’s how to welcome them, walk them through onboarding, and be the sponsor you wish you’d had.",
+      points: ["Your welcome-call checklist", "Checking in without hovering", "When to loop in Maria or your team leader"],
+      action: "Write your own welcome-call checklist and send it to Maria for feedback."
+    },
+    {
+      title: "Hosting Product Parties & Virtual Events",
+      mins: 13,
+      summary: "In-home and online events are the fastest way to reach new people. We’ll cover planning, invites, running the event, and the follow-up that turns guests into customers.",
+      points: ["Choosing in-person, Zoom, or a Facebook pop-up", "A simple 45-minute event flow", "Following up within 48 hours"],
+      action: "Pick a date for your first event and ask someone to host it."
+    },
+    {
+      title: "Social Media That Attracts",
+      mins: 11,
+      summary: "Posting more isn’t the goal. We’ll look at the kinds of posts that start conversations, how often to show up, and how to share products without sounding like an ad.",
+      points: ["The 80/20 split between personal and business posts", "Stories that start DMs", "Staying compliant online"],
+      action: "Plan your next 7 days of posts and share the plan with your sponsor."
+    },
+    {
+      title: "Duplication: Teaching the System",
+      mins: 9,
+      summary: "Your business grows when your team can do what you do. Learn how to hand new people this same onboarding path and coach them through it.",
+      points: ["Why simple beats impressive", "Getting new people started on onboarding", "Running a three-way chat for someone on your team"],
+      action: "Walk through Lesson 1 of onboarding with a newer team member."
+    },
+    {
+      title: "Running Your Business by the Numbers",
+      mins: 12,
+      summary: "Understand the numbers in your back office, like volume, active customers, and rank requirements, so you always know what to do next.",
+      points: ["Reading your volume report", "Tracking customers vs. distributors", "Setting a monthly activity target"],
+      action: "Find your current volume and write down what you need for your next rank."
+    },
+    {
+      title: "Your Path to Leadership Rank",
+      mins: 14,
+      summary: "What it takes to reach team leader, what changes when you get there, and how Maria and the leadership team will support you along the way.",
+      points: ["Leadership rank requirements", "Building a small leadership circle", "Your 6-month leadership plan"],
+      action: "Book a leadership planning call with Maria."
+    }
+  ];
 
-  let done = 0;
-  try { done = Math.min(TOTAL, parseInt(localStorage.getItem(KEY) || "0", 10) || 0); } catch (e) {}
-  let openIndex = null;
+  // Placeholder mindset videos. Put Maria's Instagram / Facebook links in url.
+  const MINDSET = [
+    { title: "Stop waiting to feel ready", from: "Maria", platform: "Instagram", length: "1:12", url: "" },
+    { title: "Rejection isn’t a verdict", from: "Maria", platform: "Facebook", length: "3:40", url: "" },
+    { title: "Your why on the hard days", from: "Cassandra Wells", platform: "Instagram", length: "0:58", url: "" },
+    { title: "Comparison steals your momentum", from: "Maria", platform: "Instagram", length: "1:30", url: "" },
+    { title: "Consistency beats motivation", from: "Maria", platform: "Facebook", length: "4:05", url: "" },
+    { title: "Talking to people without feeling salesy", from: "Jasmine Lee", platform: "Instagram", length: "2:15", url: "" },
+    { title: "Getting comfortable on camera", from: "Maria", platform: "Facebook", length: "5:20", url: "" },
+    { title: "Celebrate the small wins", from: "Cassandra Wells", platform: "Instagram", length: "0:45", url: "" }
+  ];
+  const THUMBS = [["#4a2169", "#d65a9c"], ["#7a3fc2", "#f08bb8"], ["#2a1d36", "#8b3aa8"], ["#a0336f", "#f3b0cf"]];
+
+  const TOTAL = VIDEOS.length;
+  const ADV_TOTAL = ADVANCED.length;
+
+  const TRACKS = {
+    onboarding: { videos: VIDEOS, key: "team-maria-onboarding-done", tkey: "team-maria-takeaways", list: "list", bar: "bar", fill: "barFill", label: "progressLabel", celebrate: "celebrate", unit: "Video", noun: "videos", word: "onboarding" },
+    advanced:   { videos: ADVANCED, key: "team-maria-advanced-done", tkey: "team-maria-advanced-takeaways", list: "advList", bar: "advBar", fill: "advBarFill", label: "advProgressLabel", celebrate: "advCelebrate", unit: "Lesson", noun: "lessons", word: "advanced training" }
+  };
+  // Susan's progress on each track
+  const P = {};
+  Object.entries(TRACKS).forEach(([k, t]) => {
+    P[k] = { done: 0, ans: [] };
+    try { P[k].done = Math.min(t.videos.length, parseInt(localStorage.getItem(t.key) || "0", 10) || 0); } catch (e) {}
+    try { P[k].ans = JSON.parse(localStorage.getItem(t.tkey) || "[]") || []; } catch (e) {}
+  });
+  const obDone = () => P.onboarding.done >= TOTAL;
+  let openTrack = "onboarding", openIndex = null;
+
+  /* ---------- Plans ---------- */
+  const TIERS = { standard: "Standard", premium: "Premium" };
+  const SUSAN_EMAIL = "susan.carter@example.com";
+  const TIER_KEY = "team-maria-tiers";
+  // Maria's plan changes, by email. Applies on top of each person's original plan.
+  let tierOverrides = {};
+  try { tierOverrides = JSON.parse(localStorage.getItem(TIER_KEY) || "{}") || {}; } catch (e) {}
+  const susanTier = () => tierOverrides[SUSAN_EMAIL] || "premium";
+  const isPremium = () => susanTier() === "premium";
+  function setTier(email, tier) {
+    tierOverrides[email] = tier;
+    try { localStorage.setItem(TIER_KEY, JSON.stringify(tierOverrides)); } catch (e) {}
+  }
 
   // Susan's sponsor, entered by Maria when she created Susan's login
   const SPONSOR = { name: "Jasmine Lee", phone: "(555) 318-2270" };
   let sponsorPhoneOn = true;
   const sponsor = () => ({ name: SPONSOR.name, phone: sponsorPhoneOn ? SPONSOR.phone : "" });
 
-  // Susan's answers to "What was your biggest takeaway from this lesson?"
-  const TKEY = "team-maria-takeaways";
-  let takeaways = [];
-  try { takeaways = JSON.parse(localStorage.getItem(TKEY) || "[]"); } catch (e) {}
-
   // Where the open lesson is in its wrap-up: "sponsor" → "takeaway"
   let endStage = "sponsor", sponsorChecked = false, draft = "";
 
   const $ = (id) => document.getElementById(id);
-  const list = $("list");
 
   const ICON_CHECK = '<svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
   const ICON_LOCK = '<svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1.8"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>';
+  const ICON_PLAY = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
 
-  function save() {
-    try { localStorage.setItem(KEY, String(done)); localStorage.setItem(TKEY, JSON.stringify(takeaways)); } catch (e) {}
+  function save(k) {
+    const t = TRACKS[k];
+    try { localStorage.setItem(t.key, String(P[k].done)); localStorage.setItem(t.tkey, JSON.stringify(P[k].ans)); } catch (e) {}
   }
 
-  function render() {
-    list.innerHTML = "";
-    VIDEOS.forEach((v, i) => {
-      const state = i < done ? "done" : i === done ? "current" : "locked";
+  function renderTrack(k) {
+    const t = TRACKS[k], p = P[k], n = t.videos.length, el = $(t.list);
+    el.innerHTML = "";
+    t.videos.forEach((v, i) => {
+      const state = i < p.done ? "done" : i === p.done ? "current" : "locked";
       const li = document.createElement("li");
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "step is-" + state;
-      btn.setAttribute("aria-label", `Video ${i + 1}: ${v.title}, ${state === "done" ? "completed" : state === "current" ? "start here" : "locked"}`);
+      btn.setAttribute("aria-label", `${t.unit} ${i + 1}: ${v.title}, ${state === "done" ? "completed" : state === "current" ? "start here" : "locked"}`);
       const chip = state === "done" ? `${ICON_CHECK} Completed`
-                 : state === "current" ? (done === 0 ? "Start here" : "Up next")
+                 : state === "current" ? (p.done === 0 ? "Start here" : "Up next")
                  : `${ICON_LOCK} Locked`;
       const meta = state === "current"
-        ? `<span class="current-note">Complete this video to unlock the next one</span>`
+        ? `<span class="current-note">Complete this ${t.unit.toLowerCase()} to unlock the next one</span>`
         : `<span class="step-meta">${v.mins} min video + write-up</span>`;
       btn.innerHTML = `
         <span class="num">${state === "done" ? ICON_CHECK.replace('class="icon"', 'width="20" height="20"') : i + 1}</span>
@@ -1063,19 +1368,120 @@
         <span class="chip">${chip}</span>`;
       btn.addEventListener("click", () => {
         if (state === "locked") {
-          toast(`Finish “${VIDEOS[done].title}” first to unlock this one.`);
+          toast(`Finish “${t.videos[p.done].title}” first to unlock this one.`);
           return;
         }
-        openVideo(i);
+        openVideo(k, i);
       });
       li.appendChild(btn);
-      list.appendChild(li);
+      el.appendChild(li);
     });
-    const pct = (done / TOTAL) * 100;
-    $("barFill").style.width = pct + "%";
-    $("bar").setAttribute("aria-valuenow", done);
-    $("progressLabel").textContent = `${done} of ${TOTAL} videos complete`;
-    $("celebrate").hidden = done < TOTAL;
+    $(t.fill).style.width = (p.done / n) * 100 + "%";
+    $(t.bar).setAttribute("aria-valuenow", p.done);
+    $(t.label).textContent = `${p.done} of ${n} ${t.noun} complete`;
+    $(t.celebrate).hidden = p.done < n;
+  }
+
+  /* ---------- What comes after onboarding ---------- */
+  const nextIntro = () => isPremium()
+    ? "Here are your next steps. You can do both, in whatever order you like."
+    : "Your next step is mindset training: short videos from Maria and the team to help you build the confidence and habits this business runs on.";
+  function nextOptions() {
+    const prem = isPremium(), a = P.advanced.done;
+    const advLabel = a === 0 ? "Start advanced training" : a < ADV_TOTAL ? "Continue advanced training" : "Review advanced training";
+    const mind = `
+      <div class="next-opt">
+        <b>Mindset videos</b>
+        <p>Short videos for the days your head gets in the way. Watch them in any order.</p>
+        <button class="btn ${prem ? "btn-soft" : "btn-primary"}" type="button" data-go="mindset">${prem ? "Watch mindset videos" : "Go to mindset training"}</button>
+      </div>`;
+    const adv = `
+      <div class="next-opt is-feature">
+        <b>Advanced training</b>
+        <p>${ADV_TOTAL} lessons on leading a team, hosting events, and growing to your next rank.</p>
+        <button class="btn btn-primary" type="button" data-go="advanced">${advLabel}</button>
+      </div>`;
+    return `<div class="next-opts${prem ? "" : " is-single"}">${prem ? adv + mind : mind}</div>`;
+  }
+  function renderNextSteps() {
+    $("celebrateText").textContent = `You’ve finished all ${TOTAL} onboarding videos, and Maria will reach out to schedule your launch call. ${nextIntro()}`;
+    $("celebrateOpts").innerHTML = nextOptions();
+    $("nsIntro").textContent = nextIntro();
+    $("nsOpts").innerHTML = nextOptions();
+  }
+  function openNextSteps() {
+    renderNextSteps();
+    const d = $("nextSteps");
+    if (!d.open) d.showModal();
+    d.scrollTop = 0;
+  }
+  $("nsClose").addEventListener("click", () => $("nextSteps").close());
+  $("nextSteps").addEventListener("click", (e) => { if (e.target === $("nextSteps")) $("nextSteps").close(); });
+
+  /* ---------- Locked pages ---------- */
+  const lockedHTML = (title, text, label, view) => `
+    <span class="lock-ic">${ICON_LOCK}</span>
+    <h2>${title}</h2>
+    <p>${text}</p>
+    <button class="btn btn-primary" type="button" data-go="${view}">${label}</button>`;
+  function renderGates() {
+    const left = `You’re ${P.onboarding.done} of ${TOTAL} videos in.`;
+    const mLock = !obDone();
+    $("mindsetLocked").hidden = !mLock;
+    $("mindsetContent").hidden = mLock;
+    if (mLock) $("mindsetLocked").innerHTML = lockedHTML("Mindset training unlocks after onboarding", `Finish your ${TOTAL} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
+
+    const aLock = !isPremium() || !obDone();
+    $("advLocked").hidden = !aLock;
+    $("advContent").hidden = aLock;
+    if (!isPremium()) {
+      $("advLocked").innerHTML = lockedHTML("Advanced training is part of Premium", "Your plan includes onboarding and mindset training. If you’d like advanced training too, ask Maria about moving to Premium.",
+        obDone() ? "Go to mindset training" : "Back to my onboarding", obDone() ? "mindset" : "onboarding");
+    } else if (!obDone()) {
+      $("advLocked").innerHTML = lockedHTML("Advanced training unlocks after onboarding", `Finish your ${TOTAL} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
+    }
+  }
+
+  let currentView = "login";
+  function renderNavs() {
+    const items = [["onboarding", "Onboarding", false], ["mindset", "Mindset videos", !obDone()]];
+    if (isPremium()) items.push(["advanced", "Advanced training", !obDone()]);
+    const html = items.map(([v, label, locked]) =>
+      `<a href="#${v}"${currentView === v ? ' aria-current="page"' : ""}>${locked ? ICON_LOCK : ""}${label}</a>`).join("")
+      + `<span class="dnav-tier">${TIERS[susanTier()]} plan</span>`;
+    document.querySelectorAll(".dnav").forEach(n => { n.innerHTML = html; });
+    document.querySelectorAll("[data-demo-tier]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.demoTier === susanTier())));
+  }
+
+  /* ---------- Mindset page ---------- */
+  function renderMindset() {
+    $("mindsetCount").textContent = `${MINDSET.length} videos · tap one to watch`;
+    $("mGrid").innerHTML = MINDSET.map((m, i) => {
+      const [a, b] = THUMBS[i % THUMBS.length];
+      return `<li><button class="mtile" type="button" data-mindset="${i}" aria-label="${esc(m.title)}, ${m.length}, on ${m.platform}">
+        <span class="mthumb" style="--a:${a};--b:${b}">
+          <span class="mplat">${m.platform}</span>
+          <span class="playdot">${ICON_PLAY}</span>
+          <span class="mlen">${m.length}</span>
+        </span>
+        <span class="mbody"><b>${esc(m.title)}</b><span>${esc(m.from)}</span></span>
+      </button></li>`;
+    }).join("");
+  }
+  $("mGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-mindset]");
+    if (!b) return;
+    const m = MINDSET[+b.dataset.mindset];
+    if (m.url) window.open(m.url, "_blank", "noopener");
+    else toast(`Placeholder: the ${m.platform} link for this video goes here.`);
+  });
+
+  function render() {
+    renderTrack("onboarding");
+    renderTrack("advanced");
+    renderNextSteps();
+    renderGates();
+    renderNavs();
     renderAdmin();
   }
 
@@ -1108,10 +1514,10 @@
     }, 100);
   });
 
-  function openVideo(i) {
-    openIndex = i;
-    const v = VIDEOS[i];
-    $("mEyebrow").textContent = `Video ${i + 1} of ${TOTAL} · ${v.mins} min`;
+  function openVideo(k, i) {
+    openTrack = k; openIndex = i;
+    const t = TRACKS[k], v = t.videos[i];
+    $("mEyebrow").textContent = `${k === "advanced" ? "Advanced · " : ""}${t.unit} ${i + 1} of ${t.videos.length} · ${v.mins} min`;
     $("mTitle").textContent = v.title;
     $("mWriteup").innerHTML = `
       <p>${v.summary}</p>
@@ -1127,24 +1533,26 @@
   }
 
   const smsHref = (phone, body) => `sms:+1${phone.replace(/\D/g, "").slice(-10)}?&body=${encodeURIComponent(body)}`;
-  const sponsorMessage = (i) => `Hi ${firstName(sponsor().name)}! I just finished Lesson ${i + 1} of my Team Maria onboarding: “${VIDEOS[i].title}.”`;
+  const sponsorMessage = (k, i) => `Hi ${firstName(sponsor().name)}! I just finished Lesson ${i + 1} of my Team Maria ${TRACKS[k].word}: “${TRACKS[k].videos[i].title}.”`;
 
   function renderEnd() {
-    const i = openIndex, isLast = i === TOTAL - 1, sp = sponsor(), spFirst = esc(firstName(sp.name));
+    const k = openTrack, t = TRACKS[k], p = P[k], n = t.videos.length;
+    const i = openIndex, isLast = i === n - 1, sp = sponsor(), spFirst = esc(firstName(sp.name));
+    const unit = t.unit.toLowerCase();
     const end = $("mEnd");
 
-    if (i < done) {
+    if (i < p.done) {
       end.innerHTML = `
         <span class="done-note">✓ Lesson complete</span>
         <h5>Your biggest takeaway</h5>
-        <p class="quote">${takeaways[i] ? esc(takeaways[i]) : "No answer saved for this lesson."}</p>
-        <button class="btn btn-primary" type="button" data-end="next">${done < TOTAL ? "Go to my next video →" : "Back to my training path"}</button>`;
+        <p class="quote">${p.ans[i] ? esc(p.ans[i]) : "No answer saved for this lesson."}</p>
+        <button class="btn btn-primary" type="button" data-end="next">${p.done < n ? `Go to my next ${unit} →` : "Back to my training path"}</button>`;
       return;
     }
 
     if (endStage === "sponsor") {
       const reach = sp.phone
-        ? `<a class="btn btn-soft" href="${smsHref(sp.phone, sponsorMessage(i))}">Text ${spFirst}</a>
+        ? `<a class="btn btn-soft" href="${smsHref(sp.phone, sponsorMessage(k, i))}">Text ${spFirst}</a>
            <p class="hint wnote">${spFirst}’s number: ${esc(sp.phone)}</p>`
         : `<button class="btn btn-soft" type="button" data-end="copy-sponsor">Copy a message for ${spFirst}</button>
            <p class="hint wnote">We don’t have ${spFirst}’s number on file. Copy this message and send it the way you usually reach them.</p>`;
@@ -1168,20 +1576,20 @@
             </label>
           </li>
         </ol>
-        <button class="btn btn-primary" type="button" data-end="proceed"${sponsorChecked ? "" : " disabled"}>${isLast ? "Proceed to finish →" : "Proceed to next video →"}</button>
+        <button class="btn btn-primary" type="button" data-end="proceed"${sponsorChecked ? "" : " disabled"}>${isLast ? "Proceed to finish →" : `Proceed to next ${unit} →`}</button>
         <p class="hint"${sponsorChecked ? " hidden" : ""}>Check the box above to continue.</p>`;
       return;
     }
 
     end.innerHTML = `
-      <div class="eyebrow">${isLast ? "Last step to finish your onboarding" : `Last step to unlock Lesson ${i + 2}`}</div>
+      <div class="eyebrow">${isLast ? `Last step to finish your ${t.word}` : `Last step to unlock Lesson ${i + 2}`}</div>
       <h5 id="takeawayQ">What was your biggest takeaway from this lesson?</h5>
       <div class="field">
         <label class="sr-only" for="takeaway">Your biggest takeaway</label>
         <textarea id="takeaway" rows="4" aria-labelledby="takeawayQ" placeholder="Write it in your own words…">${esc(draft)}</textarea>
       </div>
       <p class="hint">Maria reads these, so a sentence or two is perfect.</p>
-      <button class="btn btn-primary" type="button" data-end="submit"${draft.trim() ? "" : " disabled"}>${isLast ? "Complete my onboarding ✓" : "Submit & unlock next video →"}</button>
+      <button class="btn btn-primary" type="button" data-end="submit"${draft.trim() ? "" : " disabled"}>${isLast ? (k === "onboarding" ? "Complete my onboarding ✓" : "Complete advanced training ✓") : `Submit & unlock next ${unit} →`}</button>
       <button class="link-btn" type="button" data-end="back">← Back</button>`;
     $("takeaway").focus();
   }
@@ -1200,18 +1608,19 @@
   $("mEnd").addEventListener("click", (e) => {
     const b = e.target.closest("[data-end]");
     if (!b) return;
-    const i = openIndex, act = b.dataset.end;
-    if (act === "copy-sponsor") copyText(sponsorMessage(i), `Copied. Paste it into a message to ${firstName(sponsor().name)}.`);
+    const k = openTrack, p = P[k], n = TRACKS[k].videos.length, i = openIndex, act = b.dataset.end;
+    if (act === "copy-sponsor") copyText(sponsorMessage(k, i), `Copied. Paste it into a message to ${firstName(sponsor().name)}.`);
     if (act === "proceed" && sponsorChecked) { endStage = "takeaway"; renderEnd(); }
     if (act === "back") { endStage = "sponsor"; renderEnd(); }
-    if (act === "submit" && draft.trim() && i === done) {
-      takeaways[i] = draft.trim();
-      done++; save(); render();
-      if (done < TOTAL) { toast(`Nice work! Lesson ${i + 2} is unlocked.`); openVideo(done); }
-      else { closeModal(); toast("Onboarding complete. Welcome to Team Maria!"); }
+    if (act === "submit" && draft.trim() && i === p.done) {
+      p.ans[i] = draft.trim();
+      p.done++; save(k); render();
+      if (p.done < n) { toast(`Nice work! Lesson ${i + 2} is unlocked.`); openVideo(k, p.done); }
+      else if (k === "onboarding") { closeModal(); openNextSteps(); }
+      else { closeModal(); toast("Advanced training complete. Amazing work!"); }
     }
     if (act === "next") {
-      if (done < TOTAL) openVideo(done); else closeModal();
+      if (p.done < n) openVideo(k, p.done); else closeModal();
     }
   });
 
@@ -1220,13 +1629,33 @@
   $("modal").addEventListener("close", stopPlayer);
   $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
 
-  $("reset").addEventListener("click", () => { done = 0; takeaways = []; save(); render(); toast("Progress reset to the start."); });
+  $("reset").addEventListener("click", () => {
+    Object.keys(P).forEach(k => { P[k].done = 0; P[k].ans = []; save(k); });
+    render(); toast("Progress reset to the start.");
+  });
+  $("advReset").addEventListener("click", () => {
+    P.advanced.done = 0; P.advanced.ans = []; save("advanced");
+    render(); toast("Advanced training reset to the start.");
+  });
+  $("skipToEnd").addEventListener("click", () => {
+    const p = P.onboarding;
+    for (let i = 0; i < TOTAL; i++) if (!p.ans[i]) p.ans[i] = SAMPLE_TAKEAWAYS[i][0];
+    p.done = TOTAL; save("onboarding"); render();
+    openNextSteps();
+  });
   $("phoneToggle").addEventListener("click", () => {
     sponsorPhoneOn = !sponsorPhoneOn;
     $("phoneToggle").textContent = sponsorPhoneOn ? "Demo: remove sponsor’s phone number" : "Demo: add sponsor’s phone number back";
     renderAdmin();
     toast(sponsorPhoneOn ? `${SPONSOR.name}’s number is back on file.` : `${SPONSOR.name}’s number removed. Open a lesson to see the difference.`);
   });
+
+  document.querySelectorAll("[data-demo-tier]").forEach(b => b.addEventListener("click", () => {
+    if (susanTier() === b.dataset.demoTier) return;
+    setTier(SUSAN_EMAIL, b.dataset.demoTier);
+    render();
+    toast(`Showing Susan as a ${TIERS[susanTier()]} member.`);
+  }));
 
   let toastTimer;
   function toast(msg) {
@@ -1238,23 +1667,28 @@
   }
 
   /* ---------- Screens ---------- */
-  const VIEWS = ["login", "onboarding", "admin"];
+  const VIEWS = ["login", "onboarding", "mindset", "advanced", "admin"];
   function show(view) {
     if (!VIEWS.includes(view)) view = "login";
+    currentView = view;
     VIEWS.forEach(v => { $("view-" + v).hidden = v !== view; });
     document.querySelectorAll(".proto-tabs a").forEach(a => {
       if (a.dataset.view === view) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
     if ($("modal").open) closeModal();
-    if ($("answers").open) $("answers").close();
+    ["answers", "nextSteps"].forEach(id => { if ($(id).open) $(id).close(); });
+    renderNavs();
     window.scrollTo(0, 0);
   }
   function go(view) {
     if (location.hash !== "#" + view) location.hash = view; else show(view);
   }
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
-  document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-go]");
+    if (b) go(b.dataset.go);
+  });
 
   /* ---------- Login ---------- */
   $("revealBtn").addEventListener("click", () => {
@@ -1277,13 +1711,13 @@
 
   /* ---------- Admin ---------- */
   const BASE_TEAM = [
-    { name: "Jasmine Lee",    email: "jasmine.lee@example.com",   phone: "(555) 318-2270", done: 7, days: 3, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
-    { name: "Olivia Grant",   email: "olivia.grant@example.com",  phone: "(555) 440-9182", done: 5, days: 0, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
-    { name: "Tanya Brooks",   email: "tanya.brooks@example.com",  phone: "(555) 602-3345", done: 7, days: 8, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
-    { name: "Rachel Moore",   email: "rachel.moore@example.com",  phone: "(555) 274-8801", done: 2, days: 1, leader: "Cassandra", sponsor: "Olivia Grant",    sponsorPhone: "(555) 440-9182" },
-    { name: "Kendra Hill",    email: "kendra.hill@example.com",   phone: "(555) 913-5570", done: 3, days: 6, leader: "Maria",     sponsor: "Tanya Brooks",    sponsorPhone: "" },
-    { name: "Brianna Scott",  email: "brianna.scott@example.com", phone: "(555) 385-1149", done: 1, days: 9, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
-    { name: "Danielle Price", email: "danielle.price@example.com",phone: "(555) 726-0034", done: 0, days: null, password: "Peony-3316", leader: "Maria", sponsor: "Jasmine Lee", sponsorPhone: "" }
+    { name: "Jasmine Lee",    email: "jasmine.lee@example.com",   phone: "(555) 318-2270", done: 7, adv: 3, tier: "premium",  days: 3, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
+    { name: "Olivia Grant",   email: "olivia.grant@example.com",  phone: "(555) 440-9182", done: 5, tier: "premium",  days: 0, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
+    { name: "Tanya Brooks",   email: "tanya.brooks@example.com",  phone: "(555) 602-3345", done: 7, tier: "standard", days: 8, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
+    { name: "Rachel Moore",   email: "rachel.moore@example.com",  phone: "(555) 274-8801", done: 2, tier: "standard", days: 1, leader: "Cassandra", sponsor: "Olivia Grant",    sponsorPhone: "(555) 440-9182" },
+    { name: "Kendra Hill",    email: "kendra.hill@example.com",   phone: "(555) 913-5570", done: 3, tier: "standard", days: 6, leader: "Maria",     sponsor: "Tanya Brooks",    sponsorPhone: "" },
+    { name: "Brianna Scott",  email: "brianna.scott@example.com", phone: "(555) 385-1149", done: 1, tier: "premium",  days: 9, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
+    { name: "Danielle Price", email: "danielle.price@example.com",phone: "(555) 726-0034", done: 0, tier: "standard", days: null, password: "Peony-3316", leader: "Maria", sponsor: "Jasmine Lee", sponsorPhone: "" }
   ];
   // Example answers so the admin view has something to show for the sample team
   const SAMPLE_TAKEAWAYS = [
@@ -1295,6 +1729,14 @@
     ["Three-way chats with my upline take the pressure off me.", "It’s okay when people say no. It’s not personal.", "Inviting people to look is different from selling to them."],
     ["Small daily actions add up. The daily 5 is my new routine.", "Showing up to the weekly team call keeps me connected.", "Tracking my activity lets me celebrate progress, not just results."]
   ];
+  const SAMPLE_ADV = [
+    "A welcome call in the first 48 hours sets the tone. I’m writing my checklist tonight.",
+    "A Facebook pop-up feels way less scary than a full in-home party to start with.",
+    "Posting less but starting more conversations makes so much sense.",
+    "If it’s too complicated for my team to copy, it won’t grow.",
+    "I finally understand what my volume number actually means.",
+    "Having a 6-month plan makes leadership rank feel reachable."
+  ];
   const sampleAnswers = (m, n) => Array.from({ length: n }, (_, i) => SAMPLE_TAKEAWAYS[i][(m.name.length + i) % 3]);
   const ROSTER_KEY = "team-maria-added";
   let added = [];
@@ -1302,12 +1744,16 @@
   let filter = "all";
   let lastAddedEmail = null;
 
+  const tierOf = (m) => tierOverrides[m.email] || m.tier || "standard";
   function team() {
     const sp = sponsor();
-    const susan = { name: "Susan Carter", email: "susan.carter@example.com", phone: "(555) 482-1937", password: "Blossom-4827", leader: "Maria",
-                    sponsor: sp.name, sponsorPhone: sp.phone, done, days: 0, answers: takeaways };
-    return [susan, ...added.map(m => ({ leader: "Maria", sponsor: "", sponsorPhone: "", ...m, done: 0, days: null, answers: [] })),
-            ...BASE_TEAM.map(m => ({ ...m, answers: sampleAnswers(m, m.done) }))];
+    const susan = { name: "Susan Carter", email: SUSAN_EMAIL, phone: "(555) 482-1937", password: "Blossom-4827", leader: "Maria", tier: "premium",
+                    sponsor: sp.name, sponsorPhone: sp.phone, done: P.onboarding.done, days: 0, answers: P.onboarding.ans,
+                    adv: P.advanced.done, advAnswers: P.advanced.ans };
+    return [susan,
+            ...added.map(m => ({ leader: "Maria", sponsor: "", sponsorPhone: "", ...m, done: 0, adv: 0, days: null, answers: [], advAnswers: [] })),
+            ...BASE_TEAM.map(m => ({ adv: 0, ...m, answers: sampleAnswers(m, m.done), advAnswers: SAMPLE_ADV.slice(0, m.adv || 0) }))]
+      .map(m => ({ ...m, tier: tierOf(m) }));
   }
   function statusOf(m) {
     if (m.done >= TOTAL) return { key: "completed", label: "Completed" };
@@ -1319,6 +1765,13 @@
   const initials = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
   const firstName = (n) => n.trim().split(/\s+/)[0];
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function currentlyOn(m) {
+    if (m.done < TOTAL) return `<span>Video ${m.done + 1}</span>${esc(VIDEOS[m.done].title)}`;
+    if (m.tier === "premium" && m.adv < ADV_TOTAL) return `<span>Advanced lesson ${m.adv + 1}</span>${esc(ADVANCED[m.adv].title)}`;
+    if (m.tier === "premium") return "All training done";
+    return `<span>Onboarding done</span>Mindset videos`;
+  }
 
   function renderAdmin() {
     const all = team();
@@ -1339,9 +1792,10 @@
     $("roster").innerHTML = rows.length ? rows.map(m => {
       const st = statusOf(m);
       const segs = Array.from({ length: TOTAL }, (_, i) => `<span class="seg${i < m.done ? " on" : ""}"></span>`).join("");
-      const current = m.done >= TOTAL ? "All 7 videos done" : VIDEOS[m.done].title;
       const action = st.key === "not-started" ? `<button class="link-btn" type="button" data-copy-login="${esc(m.email)}">Copy login again</button>`
                    : st.key === "stalled" ? `<button class="link-btn" type="button" data-nudge="${esc(m.email)}">Copy a nudge text</button>` : "";
+      const prem = m.tier === "premium";
+      const advLine = prem && m.done >= TOTAL ? `<small class="adv-line">Advanced: ${m.adv} of ${ADV_TOTAL} lessons</small>` : "";
       return `
         <div class="r-row${m.email === lastAddedEmail ? " is-new" : ""}">
           <div class="who">
@@ -1349,12 +1803,15 @@
             <span class="who-text"><b>${esc(m.name)}</b><span>${esc(m.email)} · ${esc(m.phone)}</span></span>
           </div>
           <div class="r-leader"><span class="r-label">Team leader</span>${esc(m.leader)}</div>
+          <div class="r-tier"><span class="r-label">Plan</span><span class="tier-pill ${m.tier}">${TIERS[m.tier]}</span>
+            <button class="link-btn" type="button" data-tier-switch="${esc(m.email)}">${prem ? "Move to Standard" : "Upgrade to Premium"}</button></div>
           <div class="r-progress" aria-label="${m.done} of ${TOTAL} videos complete">
             <div class="segs">${segs}</div>
             <small>${m.done} of ${TOTAL} videos</small>
+            ${advLine}
             ${m.done > 0 ? `<button class="link-btn" type="button" data-answers="${esc(m.email)}">View answers</button>` : ""}
           </div>
-          <div class="r-current"><span class="r-label">Currently on</span>${m.done >= TOTAL ? "" : `<span>Video ${m.done + 1}</span>`}${esc(current)}</div>
+          <div class="r-current"><span class="r-label">Currently on</span>${currentlyOn(m)}</div>
           <div class="r-last"><span class="r-label">Last active</span>${lastActive(m.days)}</div>
           <div class="r-status"><span class="pill ${st.key}">${st.label}</span>${action}</div>
         </div>`;
@@ -1387,8 +1844,9 @@
   $("addForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const name = $("newName"), email = $("newEmail"), phone = $("newPhone"), err = $("addError");
-    const spName = $("newSponsor"), spPhone = $("newSponsorPhone");
-    [name, email, phone, spName, spPhone].forEach(i => i.removeAttribute("aria-invalid"));
+    const spName = $("newSponsor"), spPhone = $("newSponsorPhone"), tierBox = $("newTier");
+    const tierInput = tierBox.querySelector('input[name="tier"]:checked');
+    [name, email, phone, spName, spPhone, tierBox].forEach(i => i.removeAttribute("aria-invalid"));
     let msg = "", bad = null;
     if (!name.value.trim()) { msg = "Add their full name."; bad = name; }
     else if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg = "That email doesn’t look right. It should look like name@example.com."; bad = email; }
@@ -1396,23 +1854,29 @@
     else if (phone.value.replace(/\D/g, "").length < 10) { msg = "Add a 10-digit phone number."; bad = phone; }
     else if (!spName.value.trim()) { msg = "Add their sponsor’s name. It’s shown at the end of every lesson."; bad = spName; }
     else if (spPhone.value.trim() && spPhone.value.replace(/\D/g, "").length < 10) { msg = "The sponsor’s phone needs 10 digits, or leave it blank."; bad = spPhone; }
+    else if (!tierInput) { msg = "Choose Standard or Premium for their onboarding plan."; bad = tierBox; }
     err.textContent = msg; err.hidden = !msg;
-    if (bad) { bad.setAttribute("aria-invalid", "true"); bad.focus(); return; }
+    if (bad) {
+      bad.setAttribute("aria-invalid", "true");
+      (bad === tierBox ? tierBox.querySelector("input") : bad).focus();
+      return;
+    }
 
     const member = { name: name.value.trim(), email: email.value.trim(), phone: phone.value.trim(), leader: $("newLeader").value,
-                     sponsor: spName.value.trim(), sponsorPhone: spPhone.value.trim(), password: makePassword() };
+                     sponsor: spName.value.trim(), sponsorPhone: spPhone.value.trim(), tier: tierInput.value, password: makePassword() };
     added.unshift(member);
     try { localStorage.setItem(ROSTER_KEY, JSON.stringify(added)); } catch (e) {}
     lastAddedEmail = member.email;
     $("credsTitle").textContent = `Login created for ${member.name}`;
     $("credsEmail").textContent = member.email;
     $("credsPass").textContent = member.password;
+    $("credsTier").textContent = TIERS[member.tier];
     $("creds").hidden = false;
     $("addForm").reset();
     filter = "all";
     document.querySelectorAll("[data-filter]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.filter === "all")));
     renderAdmin();
-    toast(`${member.name} is on the team. Now send them their login.`);
+    toast(`${member.name} is on the team with the ${TIERS[member.tier]} plan. Now send them their login.`);
   });
 
   $("copyCreds").addEventListener("click", () => {
@@ -1450,24 +1914,29 @@
     if (m) copyText(loginMessage(m), `Copied. Paste it into a text to ${firstName(m.name)}.`);
   });
 
-  function openAnswers(m) {
-    $("aTitle").textContent = m.name;
-    $("aMeta").innerHTML = `
-      <span>Team leader: <b>${esc(m.leader)}</b></span>
-      <span>Sponsor: <b>${m.sponsor ? esc(m.sponsor) : "Not entered"}</b>${m.sponsor ? ` · ${m.sponsorPhone ? esc(m.sponsorPhone) : "no phone on file"}` : ""}</span>
-      <span>Progress: <b>${m.done} of ${TOTAL}</b></span>`;
-    $("aList").innerHTML = VIDEOS.map((v, i) => i < m.done ? `
+  const ansItem = (label, title, answer, done) => done ? `
       <li class="ans-item">
         <div class="ans-top">
-          <div><small>Lesson ${i + 1}</small><b>${esc(v.title)}</b></div>
+          <div><small>${label}</small><b>${esc(title)}</b></div>
           <span class="pill completed">✓ Contacted sponsor</span>
         </div>
         <p class="ans-q">What was your biggest takeaway from this lesson?</p>
-        <p class="quote">${m.answers[i] ? esc(m.answers[i]) : "No answer saved."}</p>
+        <p class="quote">${answer ? esc(answer) : "No answer saved."}</p>
       </li>` : `
       <li class="ans-item is-pending">
-        <div class="ans-top"><div><small>Lesson ${i + 1}</small><b>${esc(v.title)}</b></div><span>Not completed yet</span></div>
-      </li>`).join("");
+        <div class="ans-top"><div><small>${label}</small><b>${esc(title)}</b></div><span>Not completed yet</span></div>
+      </li>`;
+  function openAnswers(m) {
+    $("aTitle").textContent = m.name;
+    $("aMeta").innerHTML = `
+      <span>Plan: <b>${TIERS[m.tier]}</b></span>
+      <span>Team leader: <b>${esc(m.leader)}</b></span>
+      <span>Sponsor: <b>${m.sponsor ? esc(m.sponsor) : "Not entered"}</b>${m.sponsor ? ` · ${m.sponsorPhone ? esc(m.sponsorPhone) : "no phone on file"}` : ""}</span>
+      <span>Onboarding: <b>${m.done} of ${TOTAL}</b></span>
+      ${m.tier === "premium" ? `<span>Advanced: <b>${m.adv} of ${ADV_TOTAL}</b></span>` : ""}`;
+    let html = VIDEOS.map((v, i) => ansItem(`Lesson ${i + 1}`, v.title, m.answers[i], i < m.done)).join("");
+    if (m.adv > 0) html += ADVANCED.map((v, i) => ansItem(`Advanced lesson ${i + 1}`, v.title, m.advAnswers[i], i < m.adv)).join("");
+    $("aList").innerHTML = html;
     $("answers").showModal();
     $("answers").scrollTop = 0;
   }
@@ -1477,6 +1946,16 @@
   $("roster").addEventListener("click", (e) => {
     const a = e.target.closest("[data-answers]");
     if (a) openAnswers(team().find(x => x.email === a.dataset.answers));
+    const s = e.target.closest("[data-tier-switch]");
+    if (s) {
+      const m = team().find(x => x.email === s.dataset.tierSwitch);
+      const next = m.tier === "premium" ? "standard" : "premium";
+      setTier(m.email, next);
+      render();
+      toast(next === "premium"
+        ? `${firstName(m.name)} is now Premium. Advanced training opens once they finish onboarding.`
+        : `${firstName(m.name)} is now Standard. They keep onboarding and mindset videos, without advanced training.`);
+    }
     const l = e.target.closest("[data-copy-login]"), n = e.target.closest("[data-nudge]");
     if (l) {
       const m = team().find(x => x.email === l.dataset.copyLogin);
@@ -1492,13 +1971,19 @@
   $("resetAdmin").addEventListener("click", () => {
     added = []; lastAddedEmail = null;
     try { localStorage.removeItem(ROSTER_KEY); } catch (e) {}
+    // Keep the demo's Standard/Premium choice for Susan; undo Maria's other plan changes
+    const keep = tierOverrides[SUSAN_EMAIL];
+    tierOverrides = keep ? { [SUSAN_EMAIL]: keep } : {};
+    try { localStorage.setItem(TIER_KEY, JSON.stringify(tierOverrides)); } catch (e) {}
     $("creds").hidden = true;
     leaders.length = 0;
     $("leaderCreds").hidden = true;
-    renderAdmin();
+    render();
     toast("Demo team reset.");
   });
 
+  renderMindset();
   render();
   show(location.hash.slice(1) || "login");
 </script>
+
