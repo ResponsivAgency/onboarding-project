@@ -1,12 +1,17 @@
 {
   "name": "team-maria-onboarding",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Clickable prototype of the Team Maria distributor onboarding app",
+  "description": "Team Maria distributor onboarding: accounts, Standard and Premium plans, and training progress",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "pg": "8.13.1"
   }
 }
