@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Team Maria Onboarding</title>
+<title>Team Maria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap">
@@ -848,23 +848,38 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
+
+  /* ---------- Live app additions ---------- */
+  .login-wrap { min-height: 100vh; min-height: 100dvh; }
+  .boot { min-height: 100vh; display: grid; place-items: center; color: var(--ink-soft); font-size: 15px; }
+  .player.has-video { background: #000; }
+  .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .player-soon { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 16px; }
+  .player-soon b { font-family: var(--display); font-size: 28px; font-weight: 600; }
+  .player-soon span { font-size: 14px; opacity: .85; }
+  .link-code { word-break: break-all; font-size: 12px; }
+  .creds { margin: 0; }
+  .link-btn.danger { color: #b42318; }
+  .link-btn.danger:hover { color: #7a1a10; }
+  .sub-h { margin: 22px 0 10px; font-size: 15px; font-weight: 700; }
+  .staff { display: flex; flex-direction: column; border-top: 1px solid var(--silver-2); }
+  .staff-row {
+    display: grid; grid-template-columns: minmax(200px, 1.6fr) 110px minmax(120px, 1fr) minmax(170px, 1.2fr);
+    gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--silver-2);
+  }
+  .staff-status { font-size: 13px; color: var(--ink-soft); }
+  .staff-actions { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: flex-end; }
+  .staff-actions .link-btn { font-size: 13px; }
+  .ans-actions { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--silver-2); margin-bottom: 4px; }
+  .ans-actions .link-btn { font-size: 13px; }
+  @media (max-width: 720px) {
+    .staff-row { grid-template-columns: 1fr auto; }
+    .staff-status { grid-column: 1; }
+    .staff-actions { justify-content: flex-start; grid-column: 1 / -1; }
+  }
 </style>
 
-<nav class="proto-bar" aria-label="Prototype screens">
-  <span>Prototype</span>
-  <div class="proto-tabs">
-    <a href="#login" data-view="login">1 · Login</a>
-    <a href="#onboarding" data-view="onboarding">2 · Onboarding</a>
-    <a href="#mindset" data-view="mindset">3 · Mindset</a>
-    <a href="#advanced" data-view="advanced">4 · Advanced</a>
-    <a href="#admin" data-view="admin">5 · Maria’s admin</a>
-  </div>
-  <div class="proto-tier" role="group" aria-label="Susan’s plan in this demo">
-    <span>Susan is on</span>
-    <button type="button" data-demo-tier="standard" aria-pressed="false">Standard</button>
-    <button type="button" data-demo-tier="premium" aria-pressed="false">Premium</button>
-  </div>
-</nav>
+<div class="boot" id="view-boot" aria-live="polite">Loading…</div>
 
 <!-- LOGIN -->
 <section class="login-wrap" id="view-login" hidden>
@@ -872,45 +887,78 @@
     <div class="brand"><span class="brand-mark">M</span> Team Maria</div>
     <div class="login-head">
       <h1>Welcome <em>back</em></h1>
-      <p>Sign in to continue your onboarding.</p>
+      <p>Sign in to continue your training.</p>
     </div>
     <form id="loginForm" novalidate>
       <div class="field">
         <label for="loginEmail">Email</label>
-        <input id="loginEmail" type="email" autocomplete="username" value="susan.carter@example.com">
+        <input id="loginEmail" type="email" autocomplete="username" required>
       </div>
       <div class="field">
         <label for="loginPass">Password</label>
         <div class="input-row has-reveal">
-          <input id="loginPass" type="password" autocomplete="current-password" value="Blossom-4827">
-          <button class="reveal" id="revealBtn" type="button" aria-controls="loginPass">Show</button>
+          <input id="loginPass" type="password" autocomplete="current-password" required>
+          <button class="reveal" type="button" data-reveal="loginPass">Show</button>
         </div>
       </div>
       <p class="form-error" id="loginError" hidden></p>
-      <button class="btn btn-primary" type="submit">Sign in</button>
+      <button class="btn btn-primary" type="submit" id="loginBtn">Sign in</button>
     </form>
-    <p class="login-foot">Forgot your password? Text Maria and she’ll reset it for you.</p>
-    <div class="demo-note">Demo: Susan’s login is filled in. Press Sign in. Use the switch in the top bar to see her as a Standard or Premium member.</div>
+    <p class="login-foot">Forgot your password? Ask Maria or your team leader to send you a reset link.</p>
   </div>
 </section>
 
-<!-- ADMIN -->
+<!-- INVITE / RESET -->
+<section class="login-wrap" id="view-invite" hidden>
+  <div class="login-card">
+    <div class="brand"><span class="brand-mark">M</span> Team Maria</div>
+    <div class="login-head">
+      <h1 id="inviteTitle">Welcome!</h1>
+      <p id="inviteSub"></p>
+    </div>
+    <form id="inviteForm" novalidate>
+      <input type="email" id="inviteEmail" autocomplete="username" hidden>
+      <div class="field">
+        <label for="invitePass">New password</label>
+        <div class="input-row has-reveal">
+          <input id="invitePass" type="password" autocomplete="new-password" minlength="8" required aria-describedby="invitePassHint">
+          <button class="reveal" type="button" data-reveal="invitePass">Show</button>
+        </div>
+        <p class="hint" id="invitePassHint">At least 8 characters.</p>
+      </div>
+      <div class="field">
+        <label for="invitePass2">Type it again</label>
+        <input id="invitePass2" type="password" autocomplete="new-password" required>
+      </div>
+      <p class="form-error" id="inviteError" hidden></p>
+      <button class="btn btn-primary" type="submit" id="inviteBtn">Save my password</button>
+    </form>
+    <div id="inviteBad" hidden>
+      <p class="form-error" id="inviteBadMsg"></p>
+      <a class="btn btn-soft" href="#">Go to sign in</a>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN / LEADER DASHBOARD -->
 <div class="wrap wrap-wide" id="view-admin" hidden>
   <div class="topline">
-    <div class="brand"><span class="brand-mark">M</span> Team Maria · Leader Dashboard</div>
-    <button class="link-btn" type="button" data-go="login">Sign out</button>
+    <div class="brand"><span class="brand-mark">M</span> Team Maria · <span id="dashKind">Leader Dashboard</span></div>
+    <button class="link-btn" type="button" data-signout>Sign out</button>
   </div>
 
   <header class="admin-hero">
-    <h1>Hi Maria, here’s how <em>your team</em> is doing.</h1>
-    <p>Add new distributors, send them their login, and see who’s moving and who needs a nudge.</p>
+    <h1>Hi <span id="dashName"></span>, here’s how <em>your team</em> is doing.</h1>
+    <p>Add new distributors, send them their invite, and see who’s moving and who needs a nudge.</p>
   </header>
 
   <div class="stats" id="stats"></div>
 
-  <section class="panel" aria-labelledby="leaderTitle">
-    <h2 id="leaderTitle">Add a team leader</h2>
-    <p class="panel-sub">We’ll create their login. Copy it and send it to them by text or DM.</p>
+  <section class="panel admin-only" aria-labelledby="leaderTitle">
+    <h2 id="leaderTitle">Team leaders</h2>
+    <p class="panel-sub">Leaders can add distributors and see the progress of the people assigned to them.</p>
+    <div class="staff" id="staffList"></div>
+    <h3 class="sub-h">Add a team leader</h3>
     <form class="add-form" id="leaderForm" novalidate>
       <div class="field">
         <label for="leaderName">Full name</label>
@@ -924,25 +972,14 @@
         <label for="leaderPhone">Phone</label>
         <input id="leaderPhone" type="tel" autocomplete="off" placeholder="(555) 201-4410">
       </div>
-      <button class="btn btn-primary" type="submit">Create login</button>
+      <button class="btn btn-primary" type="submit">Create invite</button>
     </form>
     <p class="form-error" id="leaderError" hidden></p>
-    <div class="creds" id="leaderCreds" hidden>
-      <div>
-        <h3 id="leaderCredsTitle">Login created</h3>
-        <dl>
-          <dt>Login page</dt><dd>teammaria.app/login</dd>
-          <dt>Email</dt><dd id="leaderCredsEmail"></dd>
-          <dt>Password</dt><dd><code id="leaderCredsPass"></code></dd>
-        </dl>
-      </div>
-      <button class="btn btn-primary btn-sm" id="copyLeaderCreds" type="button">Copy message to send</button>
-    </div>
   </section>
 
   <section class="panel" aria-labelledby="addTitle">
     <h2 id="addTitle">Add a team member</h2>
-    <p class="panel-sub">We’ll create their login. Copy it and send it to them by text or DM.</p>
+    <p class="panel-sub">We’ll create an invite link. Copy it and send it to them by text or DM. They’ll use it to set their own password.</p>
     <form class="add-form" id="addForm" novalidate>
       <div class="field">
         <label for="newName">Full name</label>
@@ -956,12 +993,9 @@
         <label for="newPhone">Phone</label>
         <input id="newPhone" type="tel" autocomplete="off" placeholder="(555) 201-4410">
       </div>
-      <div class="field">
+      <div class="field admin-only">
         <label for="newLeader">Assigned Team Leader</label>
-        <select id="newLeader">
-          <option>Maria</option>
-          <option>Cassandra</option>
-        </select>
+        <select id="newLeader"></select>
       </div>
       <div class="field">
         <label for="newSponsor">Sponsor name</label>
@@ -976,22 +1010,23 @@
         <label class="tier-opt"><input type="radio" name="tier" value="standard"><span><b>Standard</b><small>Onboarding, then mindset videos</small></span></label>
         <label class="tier-opt"><input type="radio" name="tier" value="premium"><span><b>Premium</b><small>Onboarding, then mindset videos and advanced training</small></span></label>
       </fieldset>
-      <button class="btn btn-primary" type="submit">Create login</button>
+      <button class="btn btn-primary" type="submit">Create invite</button>
     </form>
     <p class="form-error" id="addError" hidden></p>
-    <div class="creds" id="creds" hidden>
-      <div>
-        <h3 id="credsTitle">Login created</h3>
-        <dl>
-          <dt>Login page</dt><dd>teammaria.app/login</dd>
-          <dt>Email</dt><dd id="credsEmail"></dd>
-          <dt>Password</dt><dd><code id="credsPass"></code></dd>
-          <dt>Plan</dt><dd id="credsTier"></dd>
-        </dl>
-      </div>
-      <button class="btn btn-primary btn-sm" id="copyCreds" type="button">Copy message to send</button>
-    </div>
   </section>
+
+  <div class="creds" id="creds" hidden>
+    <div>
+      <h3 id="credsTitle">Invite created</h3>
+      <dl>
+        <dt>Email</dt><dd id="credsEmail"></dd>
+        <dt>Invite link</dt><dd><code id="credsLink" class="link-code"></code></dd>
+        <dt id="credsTierLabel">Plan</dt><dd id="credsTier"></dd>
+      </dl>
+      <p class="hint">The link works once and expires in 14 days.</p>
+    </div>
+    <button class="btn btn-primary btn-sm" id="copyCreds" type="button">Copy message to send</button>
+  </div>
 
   <section class="panel" aria-labelledby="rosterTitle">
     <div class="section-head">
@@ -1010,32 +1045,28 @@
       <div id="roster"></div>
     </div>
   </section>
-
-  <div class="footer-row">
-    <button class="btn btn-ghost" id="resetAdmin" type="button">Reset demo team</button>
-  </div>
 </div>
 
 <!-- DISTRIBUTOR ONBOARDING -->
 <div class="wrap" id="view-onboarding" hidden>
   <div class="topline">
     <div class="brand"><span class="brand-mark">M</span> Team Maria · New Distributor Onboarding</div>
-    <button class="link-btn" type="button" data-go="login">Sign out</button>
+    <button class="link-btn" type="button" data-signout>Sign out</button>
   </div>
   <nav class="dnav" aria-label="Your training"></nav>
 
   <header class="hero">
-    <h1>Hi Susan, welcome to your onboarding for <em>Team Maria.</em></h1>
+    <h1>Hi <span class="first-name"></span>, welcome to your onboarding for <em>Team Maria.</em></h1>
     <p>Please watch the videos below <strong>in order</strong>. Each one unlocks the next. We look forward to training you up and helping you build this business at a massive level.</p>
     <div class="lets-go">Let’s go!</div>
     <div class="progress">
       <div class="bar" role="progressbar" aria-label="Onboarding progress" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="bar"><div class="bar-fill" id="barFill"></div></div>
-      <div class="progress-label" id="progressLabel">0 of 7 videos complete</div>
+      <div class="progress-label" id="progressLabel"></div>
     </div>
   </header>
 
   <div class="celebrate" id="celebrate" hidden>
-    <h2>You did it, Susan!</h2>
+    <h2>You did it, <span class="first-name"></span>!</h2>
     <p id="celebrateText"></p>
     <div id="celebrateOpts" style="width:100%"></div>
   </div>
@@ -1043,23 +1074,17 @@
   <section class="stack-14">
     <div class="section-head">
       <h2>Your training path</h2>
-      <span>7 videos · about 66 minutes</span>
+      <span id="obMeta"></span>
     </div>
     <ol class="list" id="list"></ol>
   </section>
-
-  <div class="footer-row">
-    <button class="btn btn-ghost" id="reset" type="button">Reset demo progress</button>
-    <button class="btn btn-ghost" id="skipToEnd" type="button">Demo: skip to the end of onboarding</button>
-    <button class="btn btn-ghost" id="phoneToggle" type="button">Demo: remove sponsor’s phone number</button>
-  </div>
 </div>
 
 <!-- MINDSET -->
 <div class="wrap" id="view-mindset" hidden>
   <div class="topline">
     <div class="brand"><span class="brand-mark">M</span> Team Maria · Mindset Training</div>
-    <button class="link-btn" type="button" data-go="login">Sign out</button>
+    <button class="link-btn" type="button" data-signout>Sign out</button>
   </div>
   <nav class="dnav" aria-label="Your training"></nav>
 
@@ -1076,7 +1101,6 @@
         <span id="mindsetCount"></span>
       </div>
       <ul class="mgrid" id="mGrid"></ul>
-      <div class="demo-note">Placeholder videos. Swap in Maria’s Instagram and Facebook links when she sends them.</div>
     </section>
   </div>
 </div>
@@ -1085,7 +1109,7 @@
 <div class="wrap" id="view-advanced" hidden>
   <div class="topline">
     <div class="brand"><span class="brand-mark">M</span> Team Maria · Advanced Training</div>
-    <button class="link-btn" type="button" data-go="login">Sign out</button>
+    <button class="link-btn" type="button" data-signout>Sign out</button>
   </div>
   <nav class="dnav" aria-label="Your training"></nav>
 
@@ -1097,7 +1121,7 @@
       <p>You’ve got the basics down. These lessons are about growing past your first month: leading people, hosting events, and building toward your next rank. Same as onboarding, watch them <strong>in order</strong> and each one unlocks the next.</p>
       <div class="progress">
         <div class="bar" role="progressbar" aria-label="Advanced training progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="advBar"><div class="bar-fill" id="advBarFill"></div></div>
-        <div class="progress-label" id="advProgressLabel">0 of 6 lessons complete</div>
+        <div class="progress-label" id="advProgressLabel"></div>
       </div>
     </header>
 
@@ -1112,12 +1136,7 @@
         <span id="advMeta"></span>
       </div>
       <ol class="list" id="advList"></ol>
-      <div class="demo-note">Placeholder lessons for Maria to review. Final titles, videos, and write-ups are still to come.</div>
     </section>
-
-    <div class="footer-row">
-      <button class="btn btn-ghost" id="advReset" type="button">Reset advanced progress</button>
-    </div>
   </div>
 </div>
 
@@ -1125,28 +1144,15 @@
   <div class="modal-inner">
     <div class="modal-top">
       <div>
-        <div class="eyebrow" id="mEyebrow">Video 1 of 7</div>
-        <h3 id="mTitle">Title</h3>
+        <div class="eyebrow" id="mEyebrow"></div>
+        <h3 id="mTitle"></h3>
       </div>
       <button class="close" id="mClose" type="button" aria-label="Close">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
       </button>
     </div>
-
-    <div class="player" id="player">
-      <span class="player-label">Video preview</span>
-      <button class="play" id="playBtn" type="button" aria-label="Play video">
-        <svg id="playIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
-      </button>
-      <div class="player-bar">
-        <span id="tNow">0:00</span>
-        <div class="track"><div class="track-fill" id="trackFill"></div></div>
-        <span id="tTotal">0:00</span>
-      </div>
-    </div>
-
+    <div class="player" id="player"></div>
     <div class="writeup" id="mWriteup"></div>
-
     <div class="finish" id="mEnd"></div>
   </div>
 </dialog>
@@ -1156,7 +1162,7 @@
     <div class="modal-top">
       <div>
         <div class="eyebrow">Onboarding complete</div>
-        <h3 id="nsTitle">Congrats on completing your onboarding, Susan!</h3>
+        <h3 id="nsTitle"></h3>
       </div>
       <button class="close" id="nsClose" type="button" aria-label="Close">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
@@ -1171,14 +1177,15 @@
   <div class="modal-inner">
     <div class="modal-top">
       <div>
-        <div class="eyebrow">Takeaway answers</div>
-        <h3 id="aTitle">Name</h3>
+        <div class="eyebrow">Details and answers</div>
+        <h3 id="aTitle"></h3>
       </div>
       <button class="close" id="aClose" type="button" aria-label="Close">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
       </button>
     </div>
     <div class="ans-meta" id="aMeta"></div>
+    <div class="ans-actions" id="aActions"></div>
     <ol class="ans-list" id="aList"></ol>
   </div>
 </dialog>
@@ -1186,209 +1193,216 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-  const VIDEOS = [
-    {
-      title: "Welcome to Team Maria",
-      mins: 6,
-      summary: "Maria shares how she started, why she built this team, and what our culture is all about: showing up, lifting each other, and celebrating every win.",
-      points: ["Maria’s story and why she built Team Maria", "Our team values and how we support each other", "How this onboarding path works"],
-      action: "Introduce yourself in the Team Maria group chat and share one sentence about why you joined."
-    },
-    {
-      title: "Setting Up Your Back Office",
-      mins: 8,
-      summary: "A screen-by-screen walkthrough of your distributor back office so you know where to find your orders, your team, your commissions, and your personal website link.",
-      points: ["Logging in and completing your profile", "Finding your personal shopping link", "Where to see orders, volume, and commissions"],
-      action: "Log in, finish your profile, and copy your personal website link somewhere handy."
-    },
-    {
-      title: "Know Your Products",
-      mins: 12,
-      summary: "Our best-selling products, who they’re for, and how to talk about them in your own words. You don’t need to be an expert. You just need to share what you love.",
-      points: ["The five hero products to know first", "Simple ways to describe each one", "Compliance: what we can and can’t say"],
-      action: "Pick your personal favorite product and write two sentences about why you love it."
-    },
-    {
-      title: "Your Why & 90-Day Goals",
-      mins: 7,
-      summary: "Everything in this business gets easier when you’re clear on why you’re here. We’ll help you name your why and set a realistic 90-day goal.",
-      points: ["Finding a why that actually moves you", "Setting a 90-day rank or income goal", "Choosing how many hours a week you’ll commit"],
-      action: "Write down your why and your 90-day goal, then send them to Maria."
-    },
-    {
-      title: "Building Your Contact List",
-      mins: 10,
-      summary: "Your first 100 names are already in your phone. We’ll walk through a memory jogger so you can build a list without pressure or awkwardness.",
-      points: ["Using the memory jogger", "Warm market vs. social media contacts", "Why you never pre-judge who might be interested"],
-      action: "Write down at least 50 names. Aim for 100 by the end of the week."
-    },
-    {
-      title: "Sharing the Opportunity",
-      mins: 14,
-      summary: "How to start your first conversations naturally, invite people to look at products or the business, and hand off to your upline for a three-way chat.",
-      points: ["Simple invitation scripts that feel like you", "How three-way messages with your upline work", "Handling “I’m not interested” with grace"],
-      action: "Send your first 5 invitations and tell Maria how they went."
-    },
-    {
-      title: "Your First 30 Days",
-      mins: 9,
-      summary: "Your daily method of operation: the small, repeatable actions that build momentum. Follow this for 30 days and you’ll be on your way to your first rank advancement.",
-      points: ["The daily 5: posts, conversations, and follow-ups", "Weekly team calls and trainings to attend", "How to track your activity and celebrate wins"],
-      action: "Book your launch call with Maria and put the weekly team call on your calendar."
-    }
-  ];
-  // Placeholder lessons for the Premium advanced training. Swap in real content when Maria has it.
-  const ADVANCED = [
-    {
-      title: "Leading Your First Team Member",
-      mins: 10,
-      summary: "When someone joins under you, the first two weeks set the tone. Here’s how to welcome them, walk them through onboarding, and be the sponsor you wish you’d had.",
-      points: ["Your welcome-call checklist", "Checking in without hovering", "When to loop in Maria or your team leader"],
-      action: "Write your own welcome-call checklist and send it to Maria for feedback."
-    },
-    {
-      title: "Hosting Product Parties & Virtual Events",
-      mins: 13,
-      summary: "In-home and online events are the fastest way to reach new people. We’ll cover planning, invites, running the event, and the follow-up that turns guests into customers.",
-      points: ["Choosing in-person, Zoom, or a Facebook pop-up", "A simple 45-minute event flow", "Following up within 48 hours"],
-      action: "Pick a date for your first event and ask someone to host it."
-    },
-    {
-      title: "Social Media That Attracts",
-      mins: 11,
-      summary: "Posting more isn’t the goal. We’ll look at the kinds of posts that start conversations, how often to show up, and how to share products without sounding like an ad.",
-      points: ["The 80/20 split between personal and business posts", "Stories that start DMs", "Staying compliant online"],
-      action: "Plan your next 7 days of posts and share the plan with your sponsor."
-    },
-    {
-      title: "Duplication: Teaching the System",
-      mins: 9,
-      summary: "Your business grows when your team can do what you do. Learn how to hand new people this same onboarding path and coach them through it.",
-      points: ["Why simple beats impressive", "Getting new people started on onboarding", "Running a three-way chat for someone on your team"],
-      action: "Walk through Lesson 1 of onboarding with a newer team member."
-    },
-    {
-      title: "Running Your Business by the Numbers",
-      mins: 12,
-      summary: "Understand the numbers in your back office, like volume, active customers, and rank requirements, so you always know what to do next.",
-      points: ["Reading your volume report", "Tracking customers vs. distributors", "Setting a monthly activity target"],
-      action: "Find your current volume and write down what you need for your next rank."
-    },
-    {
-      title: "Your Path to Leadership Rank",
-      mins: 14,
-      summary: "What it takes to reach team leader, what changes when you get there, and how Maria and the leadership team will support you along the way.",
-      points: ["Leadership rank requirements", "Building a small leadership circle", "Your 6-month leadership plan"],
-      action: "Book a leadership planning call with Maria."
-    }
-  ];
-
-  // Placeholder mindset videos. Put Maria's Instagram / Facebook links in url.
-  const MINDSET = [
-    { title: "Stop waiting to feel ready", from: "Maria", platform: "Instagram", length: "1:12", url: "" },
-    { title: "Rejection isn’t a verdict", from: "Maria", platform: "Facebook", length: "3:40", url: "" },
-    { title: "Your why on the hard days", from: "Cassandra Wells", platform: "Instagram", length: "0:58", url: "" },
-    { title: "Comparison steals your momentum", from: "Maria", platform: "Instagram", length: "1:30", url: "" },
-    { title: "Consistency beats motivation", from: "Maria", platform: "Facebook", length: "4:05", url: "" },
-    { title: "Talking to people without feeling salesy", from: "Jasmine Lee", platform: "Instagram", length: "2:15", url: "" },
-    { title: "Getting comfortable on camera", from: "Maria", platform: "Facebook", length: "5:20", url: "" },
-    { title: "Celebrate the small wins", from: "Cassandra Wells", platform: "Instagram", length: "0:45", url: "" }
-  ];
-  const THUMBS = [["#4a2169", "#d65a9c"], ["#7a3fc2", "#f08bb8"], ["#2a1d36", "#8b3aa8"], ["#a0336f", "#f3b0cf"]];
-
-  const TOTAL = VIDEOS.length;
-  const ADV_TOTAL = ADVANCED.length;
-
-  const TRACKS = {
-    onboarding: { videos: VIDEOS, key: "team-maria-onboarding-done", tkey: "team-maria-takeaways", list: "list", bar: "bar", fill: "barFill", label: "progressLabel", celebrate: "celebrate", unit: "Video", noun: "videos", word: "onboarding" },
-    advanced:   { videos: ADVANCED, key: "team-maria-advanced-done", tkey: "team-maria-advanced-takeaways", list: "advList", bar: "advBar", fill: "advBarFill", label: "advProgressLabel", celebrate: "advCelebrate", unit: "Lesson", noun: "lessons", word: "advanced training" }
-  };
-  // Susan's progress on each track
-  const P = {};
-  Object.entries(TRACKS).forEach(([k, t]) => {
-    P[k] = { done: 0, ans: [] };
-    try { P[k].done = Math.min(t.videos.length, parseInt(localStorage.getItem(t.key) || "0", 10) || 0); } catch (e) {}
-    try { P[k].ans = JSON.parse(localStorage.getItem(t.tkey) || "[]") || []; } catch (e) {}
-  });
-  const obDone = () => P.onboarding.done >= TOTAL;
-  let openTrack = "onboarding", openIndex = null;
-
-  /* ---------- Plans ---------- */
-  const TIERS = { standard: "Standard", premium: "Premium" };
-  const SUSAN_EMAIL = "susan.carter@example.com";
-  const TIER_KEY = "team-maria-tiers";
-  // Maria's plan changes, by email. Applies on top of each person's original plan.
-  let tierOverrides = {};
-  try { tierOverrides = JSON.parse(localStorage.getItem(TIER_KEY) || "{}") || {}; } catch (e) {}
-  const susanTier = () => tierOverrides[SUSAN_EMAIL] || "premium";
-  const isPremium = () => susanTier() === "premium";
-  function setTier(email, tier) {
-    tierOverrides[email] = tier;
-    try { localStorage.setItem(TIER_KEY, JSON.stringify(tierOverrides)); } catch (e) {}
-  }
-
-  // Susan's sponsor, entered by Maria when she created Susan's login
-  const SPONSOR = { name: "Jasmine Lee", phone: "(555) 318-2270" };
-  let sponsorPhoneOn = true;
-  const sponsor = () => ({ name: SPONSOR.name, phone: sponsorPhoneOn ? SPONSOR.phone : "" });
-
-  // Where the open lesson is in its wrap-up: "sponsor" → "takeaway"
-  let endStage = "sponsor", sponsorChecked = false, draft = "";
-
   const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const firstName = (n) => String(n || "").trim().split(/\s+/)[0];
+  const initials = (n) => String(n || "").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+  const TIERS = { standard: "Standard", premium: "Premium" };
 
   const ICON_CHECK = '<svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
   const ICON_LOCK = '<svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1.8"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>';
   const ICON_PLAY = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+  const THUMBS = [["#4a2169", "#d65a9c"], ["#7a3fc2", "#f08bb8"], ["#2a1d36", "#8b3aa8"], ["#a0336f", "#f3b0cf"]];
 
-  function save(k) {
-    const t = TRACKS[k];
-    try { localStorage.setItem(t.key, String(P[k].done)); localStorage.setItem(t.tkey, JSON.stringify(P[k].ans)); } catch (e) {}
+  /* ---------- Talking to the server ---------- */
+  async function api(path, opts = {}) {
+    const init = { method: opts.method || "GET", headers: {}, credentials: "same-origin" };
+    if (opts.body !== undefined) { init.headers["Content-Type"] = "application/json"; init.body = JSON.stringify(opts.body); }
+    let res;
+    try { res = await fetch(path, init); }
+    catch (e) { throw new Error("Can’t reach the server. Check your connection and try again."); }
+    let data = {};
+    try { data = await res.json(); } catch (e) {}
+    if (res.status === 401 && !opts.allow401) { session = null; route(); }
+    if (!res.ok) { const err = new Error(data.error || "Something went wrong. Try again."); err.status = res.status; throw err; }
+    return data;
   }
 
+  let toastTimer;
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
+  }
+  async function copyText(text, okMsg) {
+    try { await navigator.clipboard.writeText(text); toast(okMsg); }
+    catch (e) { window.prompt("Copy this message:", text); }
+  }
+
+  /* ---------- Session and routing ---------- */
+  let session = null;   // { me, content?, progress? }
+  let currentView = "boot";
+  const VIEWS = ["boot", "login", "invite", "admin", "onboarding", "mindset", "advanced"];
+  const isStaff = () => session && ["admin", "leader"].includes(session.me.role);
+
+  function showView(view) {
+    currentView = view;
+    VIEWS.forEach(v => { $("view-" + v).hidden = v !== view; });
+    ["modal", "answers", "nextSteps"].forEach(id => { if ($(id).open) $(id).close(); });
+    if (session && !isStaff()) renderNavs();
+    window.scrollTo(0, 0);
+  }
+
+  async function loadSession() {
+    try { session = await api("/api/me", { allow401: true }); }
+    catch (e) { session = null; if (e.status !== 401) toast(e.message); }
+  }
+
+  async function route() {
+    const hash = location.hash.slice(1);
+    if (hash.startsWith("invite/")) return showInvite(hash.slice(7));
+    if (!session) { showView("login"); setTimeout(() => $("loginEmail").focus(), 0); return; }
+    if (isStaff()) { showView("admin"); return loadTeam(); }
+    const view = ["onboarding", "mindset", "advanced"].includes(hash) ? hash : "onboarding";
+    renderMember();
+    showView(view);
+  }
+  const go = (view) => { if (location.hash !== "#" + view) location.hash = view; else route(); };
+  window.addEventListener("hashchange", route);
+  document.addEventListener("click", (e) => {
+    const g = e.target.closest("[data-go]");
+    if (g) go(g.dataset.go);
+    const s = e.target.closest("[data-signout]");
+    if (s) signOut();
+    const r = e.target.closest("[data-reveal]");
+    if (r) {
+      const input = $(r.dataset.reveal);
+      const showing = input.type === "text";
+      input.type = showing ? "password" : "text";
+      r.textContent = showing ? "Show" : "Hide";
+    }
+  });
+
+  async function signOut() {
+    try { await api("/api/logout", { method: "POST", body: {} }); } catch (e) {}
+    session = null;
+    if (location.hash) location.hash = ""; else route();
+  }
+
+  /* ---------- Login ---------- */
+  $("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = $("loginEmail"), pass = $("loginPass"), err = $("loginError"), btn = $("loginBtn");
+    email.removeAttribute("aria-invalid"); pass.removeAttribute("aria-invalid");
+    let msg = "";
+    if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg = "Enter the email address you were invited with."; email.setAttribute("aria-invalid", "true"); }
+    else if (!pass.value) { msg = "Enter your password."; pass.setAttribute("aria-invalid", "true"); }
+    if (!msg) {
+      btn.disabled = true;
+      try {
+        await api("/api/login", { method: "POST", body: { email: email.value.trim(), password: pass.value }, allow401: true });
+        pass.value = "";
+        await loadSession();
+        if (location.hash) location.hash = ""; else route();
+        return;
+      } catch (x) { msg = x.message; }
+      finally { btn.disabled = false; }
+    }
+    err.textContent = msg; err.hidden = !msg;
+  });
+
+  /* ---------- Invite / reset ---------- */
+  let inviteToken = "";
+  async function showInvite(token) {
+    inviteToken = token;
+    showView("invite");
+    $("inviteForm").hidden = true; $("inviteBad").hidden = true; $("inviteError").hidden = true;
+    $("inviteTitle").textContent = "One moment…"; $("inviteSub").textContent = "";
+    try {
+      const info = await api("/api/invite/" + encodeURIComponent(token), { allow401: true });
+      $("inviteTitle").innerHTML = info.kind === "reset" ? "Reset your <em>password</em>" : `Welcome, <em>${esc(firstName(info.name))}!</em>`;
+      $("inviteSub").textContent = info.kind === "reset"
+        ? `Choose a new password for ${info.email}.`
+        : `Create a password for ${info.email}. You’ll use it with your email to sign in to Team Maria.`;
+      $("inviteEmail").value = info.email;
+      $("inviteBtn").textContent = info.kind === "reset" ? "Save my new password" : "Save my password and start";
+      $("inviteForm").hidden = false;
+      $("invitePass").focus();
+    } catch (x) {
+      $("inviteTitle").textContent = "This link isn’t working";
+      $("inviteBadMsg").textContent = x.message;
+      $("inviteBad").hidden = false;
+    }
+  }
+  $("inviteForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const p1 = $("invitePass"), p2 = $("invitePass2"), err = $("inviteError"), btn = $("inviteBtn");
+    [p1, p2].forEach(i => i.removeAttribute("aria-invalid"));
+    let msg = "";
+    if (p1.value.length < 8) { msg = "Use at least 8 characters."; p1.setAttribute("aria-invalid", "true"); }
+    else if (p1.value !== p2.value) { msg = "The two passwords don’t match."; p2.setAttribute("aria-invalid", "true"); }
+    if (!msg) {
+      btn.disabled = true;
+      try {
+        await api("/api/invite/" + encodeURIComponent(inviteToken), { method: "POST", body: { password: p1.value }, allow401: true });
+        p1.value = p2.value = "";
+        await loadSession();
+        history.replaceState(null, "", location.pathname);
+        toast("You’re all set. Welcome to Team Maria!");
+        return route();
+      } catch (x) { msg = x.message; }
+      finally { btn.disabled = false; }
+    }
+    err.textContent = msg; err.hidden = !msg;
+  });
+
+  /* ======================================================================
+     DISTRIBUTOR
+     ====================================================================== */
+  const TRACK = {
+    onboarding: { list: "list", bar: "bar", fill: "barFill", label: "progressLabel", celebrate: "celebrate", meta: "obMeta", unit: "Video", noun: "videos", word: "onboarding" },
+    advanced:   { list: "advList", bar: "advBar", fill: "advBarFill", label: "advProgressLabel", celebrate: "advCelebrate", meta: "advMeta", unit: "Lesson", noun: "lessons", word: "advanced training" }
+  };
+  const lessons = (k) => session.content[k];
+  const doneCount = (k) => session.progress[k].filter(v => v != null).length;
+  const obTotal = () => lessons("onboarding").length;
+  const obDone = () => doneCount("onboarding") >= obTotal();
+  const isPremium = () => session.me.tier === "premium";
+
+  let openTrack = "onboarding", openIndex = null, endStage = "sponsor", sponsorChecked = false, draft = "", saving = false;
+
   function renderTrack(k) {
-    const t = TRACKS[k], p = P[k], n = t.videos.length, el = $(t.list);
+    const t = TRACK[k], list = lessons(k), n = list.length, done = doneCount(k), el = $(t.list);
     el.innerHTML = "";
-    t.videos.forEach((v, i) => {
-      const state = i < p.done ? "done" : i === p.done ? "current" : "locked";
+    if (!n) return;
+    list.forEach((v, i) => {
+      const state = i < done ? "done" : i === done ? "current" : "locked";
       const li = document.createElement("li");
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "step is-" + state;
       btn.setAttribute("aria-label", `${t.unit} ${i + 1}: ${v.title}, ${state === "done" ? "completed" : state === "current" ? "start here" : "locked"}`);
-      const chip = state === "done" ? `${ICON_CHECK} Completed`
-                 : state === "current" ? (p.done === 0 ? "Start here" : "Up next")
-                 : `${ICON_LOCK} Locked`;
+      const chip = state === "done" ? `${ICON_CHECK} Completed` : state === "current" ? (done === 0 ? "Start here" : "Up next") : `${ICON_LOCK} Locked`;
       const meta = state === "current"
         ? `<span class="current-note">Complete this ${t.unit.toLowerCase()} to unlock the next one</span>`
         : `<span class="step-meta">${v.mins} min video + write-up</span>`;
       btn.innerHTML = `
         <span class="num">${state === "done" ? ICON_CHECK.replace('class="icon"', 'width="20" height="20"') : i + 1}</span>
-        <span class="step-body"><span class="step-title">${v.title}</span>${meta}</span>
+        <span class="step-body"><span class="step-title">${esc(v.title)}</span>${meta}</span>
         <span class="chip">${chip}</span>`;
       btn.addEventListener("click", () => {
-        if (state === "locked") {
-          toast(`Finish “${t.videos[p.done].title}” first to unlock this one.`);
-          return;
-        }
+        if (state === "locked") { toast(`Finish “${list[done].title}” first to unlock this one.`); return; }
         openVideo(k, i);
       });
       li.appendChild(btn);
       el.appendChild(li);
     });
-    $(t.fill).style.width = (p.done / n) * 100 + "%";
-    $(t.bar).setAttribute("aria-valuenow", p.done);
-    $(t.label).textContent = `${p.done} of ${n} ${t.noun} complete`;
-    $(t.celebrate).hidden = p.done < n;
+    $(t.fill).style.width = (done / n) * 100 + "%";
+    $(t.bar).setAttribute("aria-valuemax", n);
+    $(t.bar).setAttribute("aria-valuenow", done);
+    $(t.label).textContent = `${done} of ${n} ${t.noun} complete`;
+    $(t.meta).textContent = `${n} ${t.noun} · about ${list.reduce((s, l) => s + l.mins, 0)} minutes`;
+    $(t.celebrate).hidden = done < n;
   }
 
-  /* ---------- What comes after onboarding ---------- */
   const nextIntro = () => isPremium()
     ? "Here are your next steps. You can do both, in whatever order you like."
     : "Your next step is mindset training: short videos from Maria and the team to help you build the confidence and habits this business runs on.";
   function nextOptions() {
-    const prem = isPremium(), a = P.advanced.done;
-    const advLabel = a === 0 ? "Start advanced training" : a < ADV_TOTAL ? "Continue advanced training" : "Review advanced training";
+    const prem = isPremium(), a = doneCount("advanced"), aTotal = session.content.advancedCount;
+    const advLabel = a === 0 ? "Start advanced training" : a < aTotal ? "Continue advanced training" : "Review advanced training";
     const mind = `
       <div class="next-opt">
         <b>Mindset videos</b>
@@ -1398,14 +1412,15 @@
     const adv = `
       <div class="next-opt is-feature">
         <b>Advanced training</b>
-        <p>${ADV_TOTAL} lessons on leading a team, hosting events, and growing to your next rank.</p>
+        <p>${aTotal} lessons on leading a team, hosting events, and growing to your next rank.</p>
         <button class="btn btn-primary" type="button" data-go="advanced">${advLabel}</button>
       </div>`;
     return `<div class="next-opts${prem ? "" : " is-single"}">${prem ? adv + mind : mind}</div>`;
   }
   function renderNextSteps() {
-    $("celebrateText").textContent = `You’ve finished all ${TOTAL} onboarding videos, and Maria will reach out to schedule your launch call. ${nextIntro()}`;
+    $("celebrateText").textContent = `You’ve finished all ${obTotal()} onboarding videos, and Maria will reach out to schedule your launch call. ${nextIntro()}`;
     $("celebrateOpts").innerHTML = nextOptions();
+    $("nsTitle").textContent = `Congrats on completing your onboarding, ${firstName(session.me.name)}!`;
     $("nsIntro").textContent = nextIntro();
     $("nsOpts").innerHTML = nextOptions();
   }
@@ -1418,51 +1433,46 @@
   $("nsClose").addEventListener("click", () => $("nextSteps").close());
   $("nextSteps").addEventListener("click", (e) => { if (e.target === $("nextSteps")) $("nextSteps").close(); });
 
-  /* ---------- Locked pages ---------- */
   const lockedHTML = (title, text, label, view) => `
     <span class="lock-ic">${ICON_LOCK}</span>
     <h2>${title}</h2>
     <p>${text}</p>
     <button class="btn btn-primary" type="button" data-go="${view}">${label}</button>`;
   function renderGates() {
-    const left = `You’re ${P.onboarding.done} of ${TOTAL} videos in.`;
+    const left = `You’re ${doneCount("onboarding")} of ${obTotal()} videos in.`;
     const mLock = !obDone();
     $("mindsetLocked").hidden = !mLock;
     $("mindsetContent").hidden = mLock;
-    if (mLock) $("mindsetLocked").innerHTML = lockedHTML("Mindset training unlocks after onboarding", `Finish your ${TOTAL} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
-
+    if (mLock) $("mindsetLocked").innerHTML = lockedHTML("Mindset training unlocks after onboarding", `Finish your ${obTotal()} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
     const aLock = !isPremium() || !obDone();
     $("advLocked").hidden = !aLock;
     $("advContent").hidden = aLock;
     if (!isPremium()) {
-      $("advLocked").innerHTML = lockedHTML("Advanced training is part of Premium", "Your plan includes onboarding and mindset training. If you’d like advanced training too, ask Maria about moving to Premium.",
+      $("advLocked").innerHTML = lockedHTML("Advanced training is part of Premium",
+        "Your plan includes onboarding and mindset training. If you’d like advanced training too, ask Maria about moving to Premium.",
         obDone() ? "Go to mindset training" : "Back to my onboarding", obDone() ? "mindset" : "onboarding");
     } else if (!obDone()) {
-      $("advLocked").innerHTML = lockedHTML("Advanced training unlocks after onboarding", `Finish your ${TOTAL} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
+      $("advLocked").innerHTML = lockedHTML("Advanced training unlocks after onboarding", `Finish your ${obTotal()} onboarding videos first. ${left}`, "Back to my onboarding", "onboarding");
     }
   }
-
-  let currentView = "login";
   function renderNavs() {
     const items = [["onboarding", "Onboarding", false], ["mindset", "Mindset videos", !obDone()]];
     if (isPremium()) items.push(["advanced", "Advanced training", !obDone()]);
     const html = items.map(([v, label, locked]) =>
       `<a href="#${v}"${currentView === v ? ' aria-current="page"' : ""}>${locked ? ICON_LOCK : ""}${label}</a>`).join("")
-      + `<span class="dnav-tier">${TIERS[susanTier()]} plan</span>`;
+      + `<span class="dnav-tier">${TIERS[session.me.tier] || ""} plan</span>`;
     document.querySelectorAll(".dnav").forEach(n => { n.innerHTML = html; });
-    document.querySelectorAll("[data-demo-tier]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.demoTier === susanTier())));
   }
-
-  /* ---------- Mindset page ---------- */
   function renderMindset() {
-    $("mindsetCount").textContent = `${MINDSET.length} videos · tap one to watch`;
-    $("mGrid").innerHTML = MINDSET.map((m, i) => {
+    const list = session.content.mindset;
+    $("mindsetCount").textContent = `${list.length} videos · tap one to watch`;
+    $("mGrid").innerHTML = list.map((m, i) => {
       const [a, b] = THUMBS[i % THUMBS.length];
-      return `<li><button class="mtile" type="button" data-mindset="${i}" aria-label="${esc(m.title)}, ${m.length}, on ${m.platform}">
+      return `<li><button class="mtile" type="button" data-mindset="${i}" aria-label="${esc(m.title)}, ${esc(m.length)}, on ${esc(m.platform)}">
         <span class="mthumb" style="--a:${a};--b:${b}">
-          <span class="mplat">${m.platform}</span>
+          <span class="mplat">${esc(m.platform)}</span>
           <span class="playdot">${ICON_PLAY}</span>
-          <span class="mlen">${m.length}</span>
+          <span class="mlen">${esc(m.length)}</span>
         </span>
         <span class="mbody"><b>${esc(m.title)}</b><span>${esc(m.from)}</span></span>
       </button></li>`;
@@ -1471,82 +1481,65 @@
   $("mGrid").addEventListener("click", (e) => {
     const b = e.target.closest("[data-mindset]");
     if (!b) return;
-    const m = MINDSET[+b.dataset.mindset];
-    if (m.url) window.open(m.url, "_blank", "noopener");
-    else toast(`Placeholder: the ${m.platform} link for this video goes here.`);
+    const m = session.content.mindset[+b.dataset.mindset];
+    if (/^https:\/\//.test(m.url || "")) window.open(m.url, "_blank", "noopener");
+    else toast("This video is coming soon.");
   });
 
-  function render() {
+  function renderMember() {
+    document.querySelectorAll(".first-name").forEach(n => { n.textContent = firstName(session.me.name); });
     renderTrack("onboarding");
     renderTrack("advanced");
     renderNextSteps();
     renderGates();
+    renderMindset();
     renderNavs();
-    renderAdmin();
   }
-
-  /* Mock player */
-  let timer = null, elapsed = 0, duration = 0;
-  const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
-  function stopPlayer() {
-    clearInterval(timer); timer = null;
-    $("playIcon").innerHTML = '<path d="M8 5.5v13l11-6.5z"/>';
-    $("playBtn").setAttribute("aria-label", "Play video");
-  }
-  function resetPlayer(mins) {
-    stopPlayer();
-    elapsed = 0; duration = mins * 60;
-    $("tNow").textContent = "0:00";
-    $("tTotal").textContent = fmt(duration);
-    $("trackFill").style.width = "0%";
-  }
-  $("playBtn").addEventListener("click", () => {
-    if (timer) { stopPlayer(); return; }
-    $("playIcon").innerHTML = '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>';
-    $("playBtn").setAttribute("aria-label", "Pause video");
-    // Preview plays fast: roughly 8 seconds for the whole video
-    const step = duration / 80;
-    timer = setInterval(() => {
-      elapsed = Math.min(duration, elapsed + step);
-      $("tNow").textContent = fmt(elapsed);
-      $("trackFill").style.width = (elapsed / duration) * 100 + "%";
-      if (elapsed >= duration) stopPlayer();
-    }, 100);
-  });
 
   function openVideo(k, i) {
     openTrack = k; openIndex = i;
-    const t = TRACKS[k], v = t.videos[i];
-    $("mEyebrow").textContent = `${k === "advanced" ? "Advanced · " : ""}${t.unit} ${i + 1} of ${t.videos.length} · ${v.mins} min`;
+    const t = TRACK[k], list = lessons(k), v = list[i];
+    $("mEyebrow").textContent = `${k === "advanced" ? "Advanced · " : ""}${t.unit} ${i + 1} of ${list.length} · ${v.mins} min`;
     $("mTitle").textContent = v.title;
+    const player = $("player");
+    if (v.embed) {
+      player.className = "player has-video";
+      player.innerHTML = `<iframe src="${esc(v.embed)}" title="${esc(v.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    } else {
+      player.className = "player";
+      player.innerHTML = `<div class="player-soon"><b>Video coming soon</b><span>Read the notes below for now.</span></div>`;
+    }
     $("mWriteup").innerHTML = `
-      <p>${v.summary}</p>
+      <p>${esc(v.summary)}</p>
       <h4>In this video</h4>
-      <ul>${v.points.map(p => `<li>${p}</li>`).join("")}</ul>
-      <div class="action-step"><b>Your action step:</b> ${v.action}</div>`;
-    resetPlayer(v.mins);
+      <ul>${v.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+      <div class="action-step"><b>Your action step:</b> ${esc(v.action)}</div>`;
     endStage = "sponsor"; sponsorChecked = false; draft = "";
     renderEnd();
     const modal = $("modal");
     if (!modal.open) modal.showModal();
     modal.scrollTop = 0;
   }
+  function closeModal() { $("player").innerHTML = ""; if ($("modal").open) $("modal").close(); }
+  $("mClose").addEventListener("click", closeModal);
+  $("modal").addEventListener("close", () => { $("player").innerHTML = ""; });
+  $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
 
   const smsHref = (phone, body) => `sms:+1${phone.replace(/\D/g, "").slice(-10)}?&body=${encodeURIComponent(body)}`;
-  const sponsorMessage = (k, i) => `Hi ${firstName(sponsor().name)}! I just finished Lesson ${i + 1} of my Team Maria ${TRACKS[k].word}: “${TRACKS[k].videos[i].title}.”`;
+  const sponsorMessage = (k, i) => `Hi ${firstName(session.me.sponsor.name)}! I just finished Lesson ${i + 1} of my Team Maria ${TRACK[k].word}: “${lessons(k)[i].title}.”`;
 
   function renderEnd() {
-    const k = openTrack, t = TRACKS[k], p = P[k], n = t.videos.length;
-    const i = openIndex, isLast = i === n - 1, sp = sponsor(), spFirst = esc(firstName(sp.name));
+    const k = openTrack, t = TRACK[k], n = lessons(k).length, done = doneCount(k);
+    const i = openIndex, isLast = i === n - 1, sp = session.me.sponsor, spFirst = esc(firstName(sp.name) || "your sponsor");
     const unit = t.unit.toLowerCase();
     const end = $("mEnd");
 
-    if (i < p.done) {
+    if (i < done) {
       end.innerHTML = `
         <span class="done-note">✓ Lesson complete</span>
         <h5>Your biggest takeaway</h5>
-        <p class="quote">${p.ans[i] ? esc(p.ans[i]) : "No answer saved for this lesson."}</p>
-        <button class="btn btn-primary" type="button" data-end="next">${p.done < n ? `Go to my next ${unit} →` : "Back to my training path"}</button>`;
+        <p class="quote">${esc(session.progress[k][i] || "")}</p>
+        <button class="btn btn-primary" type="button" data-end="next">${done < n ? `Go to my next ${unit} →` : "Back to my training path"}</button>`;
       return;
     }
 
@@ -1586,10 +1579,10 @@
       <h5 id="takeawayQ">What was your biggest takeaway from this lesson?</h5>
       <div class="field">
         <label class="sr-only" for="takeaway">Your biggest takeaway</label>
-        <textarea id="takeaway" rows="4" aria-labelledby="takeawayQ" placeholder="Write it in your own words…">${esc(draft)}</textarea>
+        <textarea id="takeaway" rows="4" maxlength="2000" aria-labelledby="takeawayQ" placeholder="Write it in your own words…">${esc(draft)}</textarea>
       </div>
       <p class="hint">Maria reads these, so a sentence or two is perfect.</p>
-      <button class="btn btn-primary" type="button" data-end="submit"${draft.trim() ? "" : " disabled"}>${isLast ? (k === "onboarding" ? "Complete my onboarding ✓" : "Complete advanced training ✓") : `Submit & unlock next ${unit} →`}</button>
+      <button class="btn btn-primary" type="button" data-end="submit"${draft.trim() && !saving ? "" : " disabled"}>${isLast ? (k === "onboarding" ? "Complete my onboarding ✓" : "Complete advanced training ✓") : `Submit & unlock next ${unit} →`}</button>
       <button class="link-btn" type="button" data-end="back">← Back</button>`;
     $("takeaway").focus();
   }
@@ -1603,178 +1596,93 @@
   $("mEnd").addEventListener("input", (e) => {
     if (e.target.id !== "takeaway") return;
     draft = e.target.value;
-    $("mEnd").querySelector('[data-end="submit"]').disabled = !draft.trim();
+    $("mEnd").querySelector('[data-end="submit"]').disabled = !draft.trim() || saving;
   });
-  $("mEnd").addEventListener("click", (e) => {
+  $("mEnd").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-end]");
     if (!b) return;
-    const k = openTrack, p = P[k], n = TRACKS[k].videos.length, i = openIndex, act = b.dataset.end;
-    if (act === "copy-sponsor") copyText(sponsorMessage(k, i), `Copied. Paste it into a message to ${firstName(sponsor().name)}.`);
+    const k = openTrack, n = lessons(k).length, i = openIndex, act = b.dataset.end;
+    if (act === "copy-sponsor") copyText(sponsorMessage(k, i), `Copied. Paste it into a message to ${firstName(session.me.sponsor.name)}.`);
     if (act === "proceed" && sponsorChecked) { endStage = "takeaway"; renderEnd(); }
     if (act === "back") { endStage = "sponsor"; renderEnd(); }
-    if (act === "submit" && draft.trim() && i === p.done) {
-      p.ans[i] = draft.trim();
-      p.done++; save(k); render();
-      if (p.done < n) { toast(`Nice work! Lesson ${i + 2} is unlocked.`); openVideo(k, p.done); }
-      else if (k === "onboarding") { closeModal(); openNextSteps(); }
-      else { closeModal(); toast("Advanced training complete. Amazing work!"); }
-    }
-    if (act === "next") {
-      if (p.done < n) openVideo(k, p.done); else closeModal();
+    if (act === "next") { const d = doneCount(k); if (d < n) openVideo(k, d); else closeModal(); }
+    if (act === "submit" && draft.trim() && !saving) {
+      saving = true; b.disabled = true; b.textContent = "Saving…";
+      try {
+        const r = await api("/api/progress", { method: "POST", body: { track: k, lesson: i, takeaway: draft.trim() } });
+        session.progress = r.progress;
+        renderMember();
+        const d = doneCount(k);
+        if (d < n) { toast(`Nice work! Lesson ${i + 2} is unlocked.`); openVideo(k, d); }
+        else if (k === "onboarding") { closeModal(); openNextSteps(); }
+        else { closeModal(); toast("Advanced training complete. Amazing work!"); }
+      } catch (x) {
+        toast(x.message);
+        renderEnd();
+      } finally { saving = false; }
     }
   });
 
-  function closeModal() { stopPlayer(); $("modal").close(); }
-  $("mClose").addEventListener("click", closeModal);
-  $("modal").addEventListener("close", stopPlayer);
-  $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
+  /* ======================================================================
+     MARIA AND TEAM LEADERS
+     ====================================================================== */
+  let team = null, filter = "all", lastCreated = null;
 
-  $("reset").addEventListener("click", () => {
-    Object.keys(P).forEach(k => { P[k].done = 0; P[k].ans = []; save(k); });
-    render(); toast("Progress reset to the start.");
-  });
-  $("advReset").addEventListener("click", () => {
-    P.advanced.done = 0; P.advanced.ans = []; save("advanced");
-    render(); toast("Advanced training reset to the start.");
-  });
-  $("skipToEnd").addEventListener("click", () => {
-    const p = P.onboarding;
-    for (let i = 0; i < TOTAL; i++) if (!p.ans[i]) p.ans[i] = SAMPLE_TAKEAWAYS[i][0];
-    p.done = TOTAL; save("onboarding"); render();
-    openNextSteps();
-  });
-  $("phoneToggle").addEventListener("click", () => {
-    sponsorPhoneOn = !sponsorPhoneOn;
-    $("phoneToggle").textContent = sponsorPhoneOn ? "Demo: remove sponsor’s phone number" : "Demo: add sponsor’s phone number back";
+  async function loadTeam() {
+    try { team = await api("/api/team"); }
+    catch (x) { if (x.status !== 401) toast(x.message); return; }
     renderAdmin();
-    toast(sponsorPhoneOn ? `${SPONSOR.name}’s number is back on file.` : `${SPONSOR.name}’s number removed. Open a lesson to see the difference.`);
-  });
-
-  document.querySelectorAll("[data-demo-tier]").forEach(b => b.addEventListener("click", () => {
-    if (susanTier() === b.dataset.demoTier) return;
-    setTier(SUSAN_EMAIL, b.dataset.demoTier);
-    render();
-    toast(`Showing Susan as a ${TIERS[susanTier()]} member.`);
-  }));
-
-  let toastTimer;
-  function toast(msg) {
-    const t = $("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
   }
 
-  /* ---------- Screens ---------- */
-  const VIEWS = ["login", "onboarding", "mindset", "advanced", "admin"];
-  function show(view) {
-    if (!VIEWS.includes(view)) view = "login";
-    currentView = view;
-    VIEWS.forEach(v => { $("view-" + v).hidden = v !== view; });
-    document.querySelectorAll(".proto-tabs a").forEach(a => {
-      if (a.dataset.view === view) a.setAttribute("aria-current", "page");
-      else a.removeAttribute("aria-current");
-    });
-    if ($("modal").open) closeModal();
-    ["answers", "nextSteps"].forEach(id => { if ($(id).open) $(id).close(); });
-    renderNavs();
-    window.scrollTo(0, 0);
-  }
-  function go(view) {
-    if (location.hash !== "#" + view) location.hash = view; else show(view);
-  }
-  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
-  document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-go]");
-    if (b) go(b.dataset.go);
-  });
-
-  /* ---------- Login ---------- */
-  $("revealBtn").addEventListener("click", () => {
-    const p = $("loginPass");
-    const showing = p.type === "text";
-    p.type = showing ? "password" : "text";
-    $("revealBtn").textContent = showing ? "Show" : "Hide";
-  });
-  $("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = $("loginEmail"), pass = $("loginPass"), err = $("loginError");
-    email.removeAttribute("aria-invalid"); pass.removeAttribute("aria-invalid");
-    let msg = "";
-    if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg = "Enter the email address Maria signed you up with."; email.setAttribute("aria-invalid", "true"); }
-    else if (!pass.value) { msg = "Enter your password."; pass.setAttribute("aria-invalid", "true"); }
-    err.textContent = msg;
-    err.hidden = !msg;
-    if (!msg) go("onboarding");
-  });
-
-  /* ---------- Admin ---------- */
-  const BASE_TEAM = [
-    { name: "Jasmine Lee",    email: "jasmine.lee@example.com",   phone: "(555) 318-2270", done: 7, adv: 3, tier: "premium",  days: 3, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
-    { name: "Olivia Grant",   email: "olivia.grant@example.com",  phone: "(555) 440-9182", done: 5, tier: "premium",  days: 0, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
-    { name: "Tanya Brooks",   email: "tanya.brooks@example.com",  phone: "(555) 602-3345", done: 7, tier: "standard", days: 8, leader: "Maria",     sponsor: "Maria",           sponsorPhone: "(555) 201-7788" },
-    { name: "Rachel Moore",   email: "rachel.moore@example.com",  phone: "(555) 274-8801", done: 2, tier: "standard", days: 1, leader: "Cassandra", sponsor: "Olivia Grant",    sponsorPhone: "(555) 440-9182" },
-    { name: "Kendra Hill",    email: "kendra.hill@example.com",   phone: "(555) 913-5570", done: 3, tier: "standard", days: 6, leader: "Maria",     sponsor: "Tanya Brooks",    sponsorPhone: "" },
-    { name: "Brianna Scott",  email: "brianna.scott@example.com", phone: "(555) 385-1149", done: 1, tier: "premium",  days: 9, leader: "Cassandra", sponsor: "Cassandra Wells", sponsorPhone: "(555) 390-2214" },
-    { name: "Danielle Price", email: "danielle.price@example.com",phone: "(555) 726-0034", done: 0, tier: "standard", days: null, password: "Peony-3316", leader: "Maria", sponsor: "Jasmine Lee", sponsorPhone: "" }
-  ];
-  // Example answers so the admin view has something to show for the sample team
-  const SAMPLE_TAKEAWAYS = [
-    ["Hearing Maria’s story made me realize she started exactly where I am.", "We celebrate every win here, even the small ones. I love that.", "This team actually supports each other. I don’t have to figure it out alone."],
-    ["My personal shopping link is the thing I’ll use most. I saved it to my phone.", "I know where to see my orders and commissions now, which was confusing before.", "Finishing my profile first makes everything else easier."],
-    ["I don’t need to be an expert, I just need to share what I love.", "Learning what we can and can’t say about the products was really helpful.", "Knowing the five hero products first keeps it simple."],
-    ["Writing down my why made this feel real. It’s for my kids.", "A 90-day goal is way less overwhelming than thinking a year out.", "Deciding my weekly hours up front keeps me accountable."],
-    ["My first 100 names really are already in my phone.", "Don’t pre-judge who might be interested. That one hit home.", "The memory jogger helped me think of people I’d totally forgotten."],
-    ["Three-way chats with my upline take the pressure off me.", "It’s okay when people say no. It’s not personal.", "Inviting people to look is different from selling to them."],
-    ["Small daily actions add up. The daily 5 is my new routine.", "Showing up to the weekly team call keeps me connected.", "Tracking my activity lets me celebrate progress, not just results."]
-  ];
-  const SAMPLE_ADV = [
-    "A welcome call in the first 48 hours sets the tone. I’m writing my checklist tonight.",
-    "A Facebook pop-up feels way less scary than a full in-home party to start with.",
-    "Posting less but starting more conversations makes so much sense.",
-    "If it’s too complicated for my team to copy, it won’t grow.",
-    "I finally understand what my volume number actually means.",
-    "Having a 6-month plan makes leadership rank feel reachable."
-  ];
-  const sampleAnswers = (m, n) => Array.from({ length: n }, (_, i) => SAMPLE_TAKEAWAYS[i][(m.name.length + i) % 3]);
-  const ROSTER_KEY = "team-maria-added";
-  let added = [];
-  try { added = JSON.parse(localStorage.getItem(ROSTER_KEY) || "[]"); } catch (e) {}
-  let filter = "all";
-  let lastAddedEmail = null;
-
-  const tierOf = (m) => tierOverrides[m.email] || m.tier || "standard";
-  function team() {
-    const sp = sponsor();
-    const susan = { name: "Susan Carter", email: SUSAN_EMAIL, phone: "(555) 482-1937", password: "Blossom-4827", leader: "Maria", tier: "premium",
-                    sponsor: sp.name, sponsorPhone: sp.phone, done: P.onboarding.done, days: 0, answers: P.onboarding.ans,
-                    adv: P.advanced.done, advAnswers: P.advanced.ans };
-    return [susan,
-            ...added.map(m => ({ leader: "Maria", sponsor: "", sponsorPhone: "", ...m, done: 0, adv: 0, days: null, answers: [], advAnswers: [] })),
-            ...BASE_TEAM.map(m => ({ adv: 0, ...m, answers: sampleAnswers(m, m.done), advAnswers: SAMPLE_ADV.slice(0, m.adv || 0) }))]
-      .map(m => ({ ...m, tier: tierOf(m) }));
-  }
+  const daysSince = (ts) => ts ? Math.floor((Date.now() - new Date(ts).getTime()) / 86400000) : null;
   function statusOf(m) {
-    if (m.done >= TOTAL) return { key: "completed", label: "Completed" };
-    if (m.days === null) return { key: "not-started", label: "Not started" };
-    if (m.days >= 5) return { key: "stalled", label: "Needs a nudge" };
+    const total = team.lessons.onboarding.length;
+    if (m.done >= total) return { key: "completed", label: "Completed" };
+    if (!m.activated) return { key: "not-started", label: "Not started" };
+    const d = daysSince(m.last_active_at);
+    if (d === null) return { key: "not-started", label: "Not started" };
+    if (d >= 5) return { key: "stalled", label: "Needs a nudge" };
     return { key: "on-track", label: "On track" };
   }
-  const lastActive = (d) => d === null ? "Never signed in" : d === 0 ? "Today" : d === 1 ? "Yesterday" : `${d} days ago`;
-  const initials = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
-  const firstName = (n) => n.trim().split(/\s+/)[0];
-  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-
+  function lastActive(m) {
+    if (!m.activated) return "Invite not accepted";
+    const d = daysSince(m.last_active_at);
+    return d === null ? "Never" : d === 0 ? "Today" : d === 1 ? "Yesterday" : `${d} days ago`;
+  }
   function currentlyOn(m) {
-    if (m.done < TOTAL) return `<span>Video ${m.done + 1}</span>${esc(VIDEOS[m.done].title)}`;
-    if (m.tier === "premium" && m.adv < ADV_TOTAL) return `<span>Advanced lesson ${m.adv + 1}</span>${esc(ADVANCED[m.adv].title)}`;
+    const ob = team.lessons.onboarding, adv = team.lessons.advanced;
+    if (m.done < ob.length) return `<span>Video ${m.done + 1}</span>${esc(ob[m.done])}`;
+    if (m.tier === "premium" && m.adv < adv.length) return `<span>Advanced lesson ${m.adv + 1}</span>${esc(adv[m.adv])}`;
     if (m.tier === "premium") return "All training done";
     return `<span>Onboarding done</span>Mindset videos`;
   }
 
   function renderAdmin() {
-    const all = team();
+    const me = team.me, isAdmin = me.role === "admin";
+    const total = team.lessons.onboarding.length;
+    $("dashName").textContent = firstName(me.name);
+    $("dashKind").textContent = isAdmin ? "Leader Dashboard" : "Team Leader Dashboard";
+    document.querySelectorAll(".admin-only").forEach(n => { n.hidden = !isAdmin; });
+
+    if (isAdmin) {
+      const sel = $("newLeader"), keep = sel.value;
+      sel.innerHTML = team.leaderChoices.map(l => `<option value="${l.id}">${esc(l.name)}${l.role === "admin" ? " (admin)" : ""}</option>`).join("");
+      if (keep && team.leaderChoices.some(l => String(l.id) === keep)) sel.value = keep;
+      else sel.value = String(me.id);
+      $("staffList").innerHTML = team.staff.map(s => `
+        <div class="staff-row">
+          <div class="who"><span class="avatar">${esc(initials(s.name))}</span>
+            <span class="who-text"><b>${esc(s.name)}${s.id === me.id ? " (you)" : ""}</b><span>${esc(s.email)}${s.phone ? " · " + esc(s.phone) : ""}</span></span></div>
+          <span class="tier-pill ${s.role === "admin" ? "premium" : "standard"}">${s.role === "admin" ? "Admin" : "Team leader"}</span>
+          <span class="staff-status">${s.activated ? "Active" : "Invite not accepted"}</span>
+          <span class="staff-actions">
+            ${s.id === me.id ? "" : `<button class="link-btn" type="button" data-staff-link="${s.id}">${s.activated ? "Copy password reset link" : "Copy invite link"}</button>`}
+            ${s.role === "leader" ? `<button class="link-btn danger" type="button" data-staff-remove="${s.id}">Remove</button>` : ""}
+          </span>
+        </div>`).join("");
+    }
+
+    const all = team.members;
     const counts = { completed: 0, "on-track": 0, stalled: 0, "not-started": 0 };
     all.forEach(m => counts[statusOf(m).key]++);
     $("stats").innerHTML = `
@@ -1789,36 +1697,37 @@
       if (filter === "nudge") return k === "stalled" || k === "not-started";
       return k === filter;
     });
+    const advTotal = team.lessons.advanced.length;
     $("roster").innerHTML = rows.length ? rows.map(m => {
       const st = statusOf(m);
-      const segs = Array.from({ length: TOTAL }, (_, i) => `<span class="seg${i < m.done ? " on" : ""}"></span>`).join("");
-      const action = st.key === "not-started" ? `<button class="link-btn" type="button" data-copy-login="${esc(m.email)}">Copy login again</button>`
-                   : st.key === "stalled" ? `<button class="link-btn" type="button" data-nudge="${esc(m.email)}">Copy a nudge text</button>` : "";
+      const segs = Array.from({ length: total }, (_, i) => `<span class="seg${i < m.done ? " on" : ""}"></span>`).join("");
+      const action = !m.activated ? `<button class="link-btn" type="button" data-link="${m.id}">Copy invite again</button>`
+                   : st.key === "stalled" ? `<button class="link-btn" type="button" data-nudge="${m.id}">Copy a nudge text</button>` : "";
       const prem = m.tier === "premium";
-      const advLine = prem && m.done >= TOTAL ? `<small class="adv-line">Advanced: ${m.adv} of ${ADV_TOTAL} lessons</small>` : "";
+      const advLine = prem && m.done >= total ? `<small class="adv-line">Advanced: ${m.adv} of ${advTotal} lessons</small>` : "";
       return `
-        <div class="r-row${m.email === lastAddedEmail ? " is-new" : ""}">
+        <div class="r-row${m.id === lastCreated ? " is-new" : ""}">
           <div class="who">
             <span class="avatar">${esc(initials(m.name))}</span>
             <span class="who-text"><b>${esc(m.name)}</b><span>${esc(m.email)} · ${esc(m.phone)}</span></span>
           </div>
-          <div class="r-leader"><span class="r-label">Team leader</span>${esc(m.leader)}</div>
+          <div class="r-leader"><span class="r-label">Team leader</span>${esc(m.leader_name || "Unassigned")}</div>
           <div class="r-tier"><span class="r-label">Plan</span><span class="tier-pill ${m.tier}">${TIERS[m.tier]}</span>
-            <button class="link-btn" type="button" data-tier-switch="${esc(m.email)}">${prem ? "Move to Standard" : "Upgrade to Premium"}</button></div>
-          <div class="r-progress" aria-label="${m.done} of ${TOTAL} videos complete">
+            <button class="link-btn" type="button" data-tier-switch="${m.id}">${prem ? "Move to Standard" : "Upgrade to Premium"}</button></div>
+          <div class="r-progress" aria-label="${m.done} of ${total} videos complete">
             <div class="segs">${segs}</div>
-            <small>${m.done} of ${TOTAL} videos</small>
+            <small>${m.done} of ${total} videos</small>
             ${advLine}
-            ${m.done > 0 ? `<button class="link-btn" type="button" data-answers="${esc(m.email)}">View answers</button>` : ""}
+            <button class="link-btn" type="button" data-details="${m.id}">Details & answers</button>
           </div>
           <div class="r-current"><span class="r-label">Currently on</span>${currentlyOn(m)}</div>
-          <div class="r-last"><span class="r-label">Last active</span>${lastActive(m.days)}</div>
+          <div class="r-last"><span class="r-label">Last active</span>${lastActive(m)}</div>
           <div class="r-status"><span class="pill ${st.key}">${st.label}</span>${action}</div>
         </div>`;
-    }).join("") : `<div class="empty">No one here right now.</div>`;
+    }).join("") : `<div class="empty">${all.length ? "No one here right now." : "No team members yet. Add your first one above."}</div>`;
   }
 
-  document.getElementById("filters").addEventListener("click", (e) => {
+  $("filters").addEventListener("click", (e) => {
     const b = e.target.closest("[data-filter]");
     if (!b) return;
     filter = b.dataset.filter;
@@ -1826,92 +1735,117 @@
     renderAdmin();
   });
 
-  const WORDS = ["Blossom", "Velvet", "Orchid", "Peony", "Lilac", "Sparkle", "Magnolia", "Radiant", "Rosewood", "Shimmer"];
-  const makePassword = () => `${WORDS[Math.floor(Math.random() * WORDS.length)]}-${1000 + Math.floor(Math.random() * 9000)}`;
-  const loginMessage = (m) =>
-    `Hi ${firstName(m.name)}, welcome to Team Maria! Here’s your login for our onboarding training:\n\n` +
-    `Login page: teammaria.app/login\nEmail: ${m.email}\nPassword: ${m.password}\n\n` +
-    `Watch the videos in order and text me when you finish the first one. So excited to have you!`;
+  const inviteMessage = (name, link) =>
+    `Hi ${firstName(name)}, welcome to Team Maria! Tap this link to create your password and start your onboarding:\n\n${link}\n\n` +
+    `The link works once and expires in 14 days. Text me when you finish your first video. So excited to have you!`;
+  const resetMessage = (name, link) =>
+    `Hi ${firstName(name)}! Here’s a link to reset your Team Maria password:\n\n${link}\n\nIt works once and expires in 14 days.`;
   const nudgeMessage = (m) =>
-    `Hey ${firstName(m.name)}! Just checking in. You’re ${m.done} of ${TOTAL} videos into your onboarding. ` +
-    `Next up is “${VIDEOS[m.done].title}.” Want to hop on a quick call this week? You’ve got this!`;
+    `Hey ${firstName(m.name)}! Just checking in. You’re ${m.done} of ${team.lessons.onboarding.length} videos into your onboarding. ` +
+    `Next up is “${team.lessons.onboarding[m.done]}.” Want to hop on a quick call this week? You’ve got this!`;
 
-  async function copyText(text, okMsg) {
-    try { await navigator.clipboard.writeText(text); toast(okMsg); }
-    catch (e) { toast("Couldn’t copy automatically. Select the details and copy them by hand."); }
+  let lastInvite = null;
+  function showCreds(person, link, tier) {
+    lastInvite = { name: person.name, link };
+    $("credsTitle").textContent = `Invite created for ${person.name}`;
+    $("credsEmail").textContent = person.email;
+    $("credsLink").textContent = link;
+    $("credsTierLabel").hidden = $("credsTier").hidden = !tier;
+    $("credsTier").textContent = tier ? TIERS[tier] : "";
+    $("creds").hidden = false;
+    $("creds").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  $("copyCreds").addEventListener("click", () => {
+    if (lastInvite) copyText(inviteMessage(lastInvite.name, lastInvite.link), `Copied. Paste it into a text to ${firstName(lastInvite.name)}.`);
+  });
+
+  function formFail(errEl, x) {
+    errEl.textContent = x.message; errEl.hidden = false;
   }
 
-  $("addForm").addEventListener("submit", (e) => {
+  $("addForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = $("newName"), email = $("newEmail"), phone = $("newPhone"), err = $("addError");
-    const spName = $("newSponsor"), spPhone = $("newSponsorPhone"), tierBox = $("newTier");
-    const tierInput = tierBox.querySelector('input[name="tier"]:checked');
-    [name, email, phone, spName, spPhone, tierBox].forEach(i => i.removeAttribute("aria-invalid"));
-    let msg = "", bad = null;
-    if (!name.value.trim()) { msg = "Add their full name."; bad = name; }
-    else if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg = "That email doesn’t look right. It should look like name@example.com."; bad = email; }
-    else if (team().some(m => m.email.toLowerCase() === email.value.trim().toLowerCase())) { msg = "Someone on the team already uses that email."; bad = email; }
-    else if (phone.value.replace(/\D/g, "").length < 10) { msg = "Add a 10-digit phone number."; bad = phone; }
-    else if (!spName.value.trim()) { msg = "Add their sponsor’s name. It’s shown at the end of every lesson."; bad = spName; }
-    else if (spPhone.value.trim() && spPhone.value.replace(/\D/g, "").length < 10) { msg = "The sponsor’s phone needs 10 digits, or leave it blank."; bad = spPhone; }
-    else if (!tierInput) { msg = "Choose Standard or Premium for their onboarding plan."; bad = tierBox; }
-    err.textContent = msg; err.hidden = !msg;
-    if (bad) {
-      bad.setAttribute("aria-invalid", "true");
-      (bad === tierBox ? tierBox.querySelector("input") : bad).focus();
-      return;
+    const err = $("addError"), btn = e.submitter || $("addForm").querySelector("button[type=submit]");
+    const tierInput = $("newTier").querySelector('input[name="tier"]:checked');
+    const body = {
+      name: $("newName").value, email: $("newEmail").value, phone: $("newPhone").value,
+      sponsorName: $("newSponsor").value, sponsorPhone: $("newSponsorPhone").value,
+      tier: tierInput ? tierInput.value : "", leaderId: Number($("newLeader").value) || undefined
+    };
+    $("newTier").removeAttribute("aria-invalid");
+    if (!tierInput && body.name.trim() && body.email.trim()) $("newTier").setAttribute("aria-invalid", "true");
+    btn.disabled = true;
+    try {
+      const r = await api("/api/members", { method: "POST", body });
+      err.hidden = true;
+      lastCreated = r.id;
+      showCreds({ name: body.name.trim(), email: body.email.trim().toLowerCase() }, r.link, body.tier);
+      $("addForm").reset();
+      filter = "all";
+      document.querySelectorAll("[data-filter]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.filter === "all")));
+      await loadTeam();
+      toast(`${body.name.trim()} is on the team with the ${TIERS[body.tier]} plan. Now send them their invite.`);
+    } catch (x) { formFail(err, x); }
+    finally { btn.disabled = false; }
+  });
+
+  $("leaderForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = $("leaderError"), btn = $("leaderForm").querySelector("button[type=submit]");
+    const body = { name: $("leaderName").value, email: $("leaderEmail").value, phone: $("leaderPhone").value };
+    btn.disabled = true;
+    try {
+      const r = await api("/api/leaders", { method: "POST", body });
+      err.hidden = true;
+      showCreds({ name: body.name.trim(), email: body.email.trim().toLowerCase() }, r.link, null);
+      $("leaderForm").reset();
+      await loadTeam();
+      toast(`${body.name.trim()} is now a team leader. Send them their invite.`);
+    } catch (x) { formFail(err, x); }
+    finally { btn.disabled = false; }
+  });
+
+  const findMember = (id) => team.members.find(x => x.id === Number(id));
+  async function copyLink(id, name) {
+    try {
+      const r = await api(`/api/users/${id}/link`, { method: "POST", body: {} });
+      const msg = r.kind === "reset" ? resetMessage(name, r.link) : inviteMessage(name, r.link);
+      copyText(msg, r.kind === "reset" ? `Reset link copied for ${firstName(name)}. Any older link stops working.` : `New invite copied for ${firstName(name)}. Any older invite stops working.`);
+    } catch (x) { toast(x.message); }
+  }
+
+  $("roster").addEventListener("click", async (e) => {
+    const t = e.target.closest("[data-tier-switch]");
+    if (t) {
+      const m = findMember(t.dataset.tierSwitch);
+      const next = m.tier === "premium" ? "standard" : "premium";
+      t.disabled = true;
+      try {
+        await api(`/api/users/${m.id}/tier`, { method: "POST", body: { tier: next } });
+        await loadTeam();
+        toast(next === "premium"
+          ? `${firstName(m.name)} is now Premium. Advanced training opens once they finish onboarding.`
+          : `${firstName(m.name)} is now Standard. They keep onboarding and mindset videos, without advanced training.`);
+      } catch (x) { toast(x.message); t.disabled = false; }
     }
-
-    const member = { name: name.value.trim(), email: email.value.trim(), phone: phone.value.trim(), leader: $("newLeader").value,
-                     sponsor: spName.value.trim(), sponsorPhone: spPhone.value.trim(), tier: tierInput.value, password: makePassword() };
-    added.unshift(member);
-    try { localStorage.setItem(ROSTER_KEY, JSON.stringify(added)); } catch (e) {}
-    lastAddedEmail = member.email;
-    $("credsTitle").textContent = `Login created for ${member.name}`;
-    $("credsEmail").textContent = member.email;
-    $("credsPass").textContent = member.password;
-    $("credsTier").textContent = TIERS[member.tier];
-    $("creds").hidden = false;
-    $("addForm").reset();
-    filter = "all";
-    document.querySelectorAll("[data-filter]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.filter === "all")));
-    renderAdmin();
-    toast(`${member.name} is on the team with the ${TIERS[member.tier]} plan. Now send them their login.`);
+    const l = e.target.closest("[data-link]");
+    if (l) { const m = findMember(l.dataset.link); copyLink(m.id, m.name); }
+    const n = e.target.closest("[data-nudge]");
+    if (n) { const m = findMember(n.dataset.nudge); copyText(nudgeMessage(m), `Nudge text copied for ${firstName(m.name)}.`); }
+    const d = e.target.closest("[data-details]");
+    if (d) openDetails(findMember(d.dataset.details));
   });
 
-  $("copyCreds").addEventListener("click", () => {
-    const m = added.find(x => x.email === lastAddedEmail);
-    if (m) copyText(loginMessage(m), `Copied. Paste it into a text to ${firstName(m.name)}.`);
-  });
-
-  // Team leaders get a login but aren't listed in the distributor progress table
-  const leaders = [];
-  $("leaderForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = $("leaderName"), email = $("leaderEmail"), phone = $("leaderPhone"), err = $("leaderError");
-    [name, email, phone].forEach(i => i.removeAttribute("aria-invalid"));
-    const taken = (addr) => [...team(), ...leaders].some(m => m.email.toLowerCase() === addr.toLowerCase());
-    let msg = "", bad = null;
-    if (!name.value.trim()) { msg = "Add their full name."; bad = name; }
-    else if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg = "That email doesn’t look right. It should look like name@example.com."; bad = email; }
-    else if (taken(email.value.trim())) { msg = "Someone on the team already uses that email."; bad = email; }
-    else if (phone.value.replace(/\D/g, "").length < 10) { msg = "Add a 10-digit phone number."; bad = phone; }
-    err.textContent = msg; err.hidden = !msg;
-    if (bad) { bad.setAttribute("aria-invalid", "true"); bad.focus(); return; }
-
-    const leader = { name: name.value.trim(), email: email.value.trim(), phone: phone.value.trim(), password: makePassword() };
-    leaders.unshift(leader);
-    $("leaderCredsTitle").textContent = `Login created for ${leader.name}`;
-    $("leaderCredsEmail").textContent = leader.email;
-    $("leaderCredsPass").textContent = leader.password;
-    $("leaderCreds").hidden = false;
-    $("leaderForm").reset();
-    toast(`${leader.name} is now a team leader. Send them their login.`);
-  });
-
-  $("copyLeaderCreds").addEventListener("click", () => {
-    const m = leaders[0];
-    if (m) copyText(loginMessage(m), `Copied. Paste it into a text to ${firstName(m.name)}.`);
+  $("staffList").addEventListener("click", async (e) => {
+    const l = e.target.closest("[data-staff-link]");
+    if (l) { const s = team.staff.find(x => x.id === Number(l.dataset.staffLink)); copyLink(s.id, s.name); }
+    const r = e.target.closest("[data-staff-remove]");
+    if (r) {
+      const s = team.staff.find(x => x.id === Number(r.dataset.staffRemove));
+      if (!confirm(`Remove ${s.name} as a team leader? Their login stops working, and their team members will show as Unassigned.`)) return;
+      try { await api(`/api/users/${s.id}`, { method: "DELETE" }); await loadTeam(); toast(`${s.name} was removed.`); }
+      catch (x) { toast(x.message); }
+    }
   });
 
   const ansItem = (label, title, answer, done) => done ? `
@@ -1921,69 +1855,51 @@
           <span class="pill completed">✓ Contacted sponsor</span>
         </div>
         <p class="ans-q">What was your biggest takeaway from this lesson?</p>
-        <p class="quote">${answer ? esc(answer) : "No answer saved."}</p>
+        <p class="quote">${esc(answer || "")}</p>
       </li>` : `
       <li class="ans-item is-pending">
         <div class="ans-top"><div><small>${label}</small><b>${esc(title)}</b></div><span>Not completed yet</span></div>
       </li>`;
-  function openAnswers(m) {
+  async function openDetails(m) {
     $("aTitle").textContent = m.name;
     $("aMeta").innerHTML = `
       <span>Plan: <b>${TIERS[m.tier]}</b></span>
-      <span>Team leader: <b>${esc(m.leader)}</b></span>
-      <span>Sponsor: <b>${m.sponsor ? esc(m.sponsor) : "Not entered"}</b>${m.sponsor ? ` · ${m.sponsorPhone ? esc(m.sponsorPhone) : "no phone on file"}` : ""}</span>
-      <span>Onboarding: <b>${m.done} of ${TOTAL}</b></span>
-      ${m.tier === "premium" ? `<span>Advanced: <b>${m.adv} of ${ADV_TOTAL}</b></span>` : ""}`;
-    let html = VIDEOS.map((v, i) => ansItem(`Lesson ${i + 1}`, v.title, m.answers[i], i < m.done)).join("");
-    if (m.adv > 0) html += ADVANCED.map((v, i) => ansItem(`Advanced lesson ${i + 1}`, v.title, m.advAnswers[i], i < m.adv)).join("");
-    $("aList").innerHTML = html;
+      <span>Team leader: <b>${esc(m.leader_name || "Unassigned")}</b></span>
+      <span>Sponsor: <b>${esc(m.sponsor_name || "Not entered")}</b>${m.sponsor_name ? ` · ${m.sponsor_phone ? esc(m.sponsor_phone) : "no phone on file"}` : ""}</span>
+      <span>Onboarding: <b>${m.done} of ${team.lessons.onboarding.length}</b></span>
+      ${m.tier === "premium" ? `<span>Advanced: <b>${m.adv} of ${team.lessons.advanced.length}</b></span>` : ""}`;
+    $("aActions").innerHTML = `
+      <button class="link-btn" type="button" data-a-link>${m.activated ? "Copy password reset link" : "Copy invite again"}</button>
+      ${team.me.role === "admin" ? `<button class="link-btn danger" type="button" data-a-remove>Remove from team</button>` : ""}`;
+    $("aActions").onclick = async (e) => {
+      if (e.target.closest("[data-a-link]")) copyLink(m.id, m.name);
+      if (e.target.closest("[data-a-remove]")) {
+        if (!confirm(`Remove ${m.name} from the team? This deletes their login, progress, and answers, and can’t be undone.`)) return;
+        try { await api(`/api/users/${m.id}`, { method: "DELETE" }); $("answers").close(); await loadTeam(); toast(`${m.name} was removed.`); }
+        catch (x) { toast(x.message); }
+      }
+    };
+    $("aList").innerHTML = `<li class="ans-item is-pending">Loading answers…</li>`;
     $("answers").showModal();
     $("answers").scrollTop = 0;
+    try {
+      const { progress } = await api(`/api/users/${m.id}/answers`);
+      let html = team.lessons.onboarding.map((t, i) => ansItem(`Lesson ${i + 1}`, t, progress.onboarding[i], progress.onboarding[i] != null)).join("");
+      if (m.tier === "premium" || progress.advanced.length)
+        html += team.lessons.advanced.map((t, i) => ansItem(`Advanced lesson ${i + 1}`, t, progress.advanced[i], progress.advanced[i] != null)).join("");
+      $("aList").innerHTML = html;
+    } catch (x) { $("aList").innerHTML = `<li class="ans-item is-pending">${esc(x.message)}</li>`; }
   }
   $("aClose").addEventListener("click", () => $("answers").close());
   $("answers").addEventListener("click", (e) => { if (e.target === $("answers")) $("answers").close(); });
 
-  $("roster").addEventListener("click", (e) => {
-    const a = e.target.closest("[data-answers]");
-    if (a) openAnswers(team().find(x => x.email === a.dataset.answers));
-    const s = e.target.closest("[data-tier-switch]");
-    if (s) {
-      const m = team().find(x => x.email === s.dataset.tierSwitch);
-      const next = m.tier === "premium" ? "standard" : "premium";
-      setTier(m.email, next);
-      render();
-      toast(next === "premium"
-        ? `${firstName(m.name)} is now Premium. Advanced training opens once they finish onboarding.`
-        : `${firstName(m.name)} is now Standard. They keep onboarding and mindset videos, without advanced training.`);
-    }
-    const l = e.target.closest("[data-copy-login]"), n = e.target.closest("[data-nudge]");
-    if (l) {
-      const m = team().find(x => x.email === l.dataset.copyLogin);
-      if (!m.password) m.password = makePassword();
-      copyText(loginMessage(m), `Login copied for ${firstName(m.name)}.`);
-    }
-    if (n) {
-      const m = team().find(x => x.email === n.dataset.nudge);
-      copyText(nudgeMessage(m), `Nudge text copied for ${firstName(m.name)}.`);
-    }
+  // Keep the dashboard fresh when Maria comes back to the tab
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && currentView === "admin" && session) loadTeam();
   });
 
-  $("resetAdmin").addEventListener("click", () => {
-    added = []; lastAddedEmail = null;
-    try { localStorage.removeItem(ROSTER_KEY); } catch (e) {}
-    // Keep the demo's Standard/Premium choice for Susan; undo Maria's other plan changes
-    const keep = tierOverrides[SUSAN_EMAIL];
-    tierOverrides = keep ? { [SUSAN_EMAIL]: keep } : {};
-    try { localStorage.setItem(TIER_KEY, JSON.stringify(tierOverrides)); } catch (e) {}
-    $("creds").hidden = true;
-    leaders.length = 0;
-    $("leaderCreds").hidden = true;
-    render();
-    toast("Demo team reset.");
-  });
-
-  renderMindset();
-  render();
-  show(location.hash.slice(1) || "login");
+  (async () => {
+    if (!location.hash.startsWith("#invite/")) await loadSession();
+    route();
+  })();
 </script>
-
